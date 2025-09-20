@@ -9,6 +9,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 public class Index {
     ColorSensor pos1, pos2, pos3;
+    private String pos1color;
+    private String pos2color;
+    private  String pos3color;
     DcMotorEx indexmotor;
 
     public Index(HardwareMap hardwareMap){
@@ -24,7 +27,7 @@ public class Index {
 
         if (pos1.argb() == 300){
             //replace 300 with rgb values for green color ball
-            String pos1color = "green";
+            pos1color = "green";
 
 
         }
