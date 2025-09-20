@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class IndexConstants {
     //Add subsystem constants here.  Use this to avoid magic numbers
+
     public static final int MOTOR_NAME_THRESHOLD = 5;
     public static final DcMotor.ZeroPowerBehavior MOTOR_NAME_ZERO_POWER_BEHAVIOR = DcMotor.ZeroPowerBehavior.BRAKE;
     public static final DcMotorSimple.Direction MOTOR_NAME_DIRECTION = DcMotorSimple.Direction.REVERSE;

@@ -16,9 +16,9 @@ public class Index {
 
     public Index(HardwareMap hardwareMap){
 
-        this.pos1 = hardwareMap.get(ColorSensor.class, "pos1sensor");
-        this.pos2 = hardwareMap.get(ColorSensor.class, "pos2sensor");
-        this.pos3 = hardwareMap.get(ColorSensor.class, "pos3sensor");
+        this.pos1 = hardwareMap.get(ColorSensor.class, "pos1color");
+        this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");
+        this.pos3 = hardwareMap.get(ColorSensor.class, "pos3color");
         this.indexmotor = hardwareMap.get(DcMotorEx.class, "indexmotor");
         indexmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
