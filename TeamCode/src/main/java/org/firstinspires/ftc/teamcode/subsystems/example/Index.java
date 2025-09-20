@@ -9,32 +9,40 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 public class Index {
     ColorSensor pos1, pos2, pos3;
-    private String pos1color;
-    private String pos2color;
-    private  String pos3color;
-    DcMotorEx indexmotor;
+    public String pos1color;
+    public String pos2color;
+    public  String pos3color;
+    private int greenMax = 0;
+    //DcMotorEx indexmotor;
 
     public Index(HardwareMap hardwareMap){
 
-        this.pos1 = hardwareMap.get(ColorSensor.class, "pos1color");
-        this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");
-        this.pos3 = hardwareMap.get(ColorSensor.class, "pos3color");
-        this.indexmotor = hardwareMap.get(DcMotorEx.class, "indexmotor");
-        indexmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.pos1 = hardwareMap.get(ColorSensor.class, "color1");
+        //this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");
+        //this.pos3 = hardwareMap.get(ColorSensor.class, "pos3color");
+        //this.indexmotor = hardwareMap.get(DcMotorEx.class, "indexmotor");
+        //indexmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void read(){
-
-        if (pos1.argb() == 300){
+    public String read(String pos1color){
+        if (pos1.green() > greenMax){
+            greenMax = pos1.green();
+        }
+        if (greenMax > 2100) {
+            //change 2100 fine tune no magic numbers, same for 700
             //replace 300 with rgb values for green color ball
             pos1color = "green";
-
+        }
+        else if (greenMax > 700) {
+            pos1color = "purple";
+            }
+        return pos1color;
 
         }
-    }
+
 
     public void sort(String color){
-        indexmotor.setTargetPosition(100);
+        //indexmotor.setTargetPosition(100);
         //set pos for each correct ball color...
     }
 
