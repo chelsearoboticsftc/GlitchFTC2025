@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems.example;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -13,6 +14,8 @@ public class Index {
     public String pos2color;
     public  String pos3color;
     private int greenMax = 0;
+    private int bluemax = 0;
+    int redmax = 0;
     //DcMotorEx indexmotor;
 
     public Index(HardwareMap hardwareMap){
@@ -28,14 +31,29 @@ public class Index {
         if (pos1.green() > greenMax){
             greenMax = pos1.green();
         }
-        if (greenMax > 2100) {
+        if (pos1.red() > redmax){
+            redmax = pos1.red();
+        }
+        if (pos1.blue() > bluemax){
+            bluemax = pos1.blue();
+        }
+        if (bluemax < 1800 && bluemax > 100 && redmax < 1000) {
             //change 2100 fine tune no magic numbers, same for 700
             //replace 300 with rgb values for green color ball
             pos1color = "green";
+            bluemax = 0;
+            redmax = 0;
+
         }
-        else if (greenMax > 700) {
+        else if (bluemax > 1000 && bluemax > 100 && redmax > 1000) {
             pos1color = "purple";
+            bluemax = 0;
+            redmax = 0;
+
             }
+        else if (bluemax < 100 ) {
+            pos1color = "none";
+        }
         return pos1color;
 
         }
