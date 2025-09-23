@@ -17,12 +17,21 @@ public class BasicTeleopDrive extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
+            double strafe =  -gamepad1.right_stick_x;
+            if (strafe < 0.0001 || strafe > 0.0001){
+                drive.leftBack.setPower(strafe);
+                drive.leftFront.setPower(-strafe);
+                drive.rightBack.setPower(strafe);
+                drive.rightFront.setPower(-strafe);
+            }
+
 
             drive.setDrivePowers(
                     new PoseVelocity2d(
                             new Vector2d(-gamepad1.left_stick_y,
                                          -gamepad1.left_stick_x),
                             -gamepad1.left_stick_x));
+
         }
     }
 }
