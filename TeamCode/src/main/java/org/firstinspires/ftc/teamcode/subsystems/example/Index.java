@@ -1,15 +1,21 @@
 package org.firstinspires.ftc.teamcode.subsystems.example;
 
+
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //theoretical index test code
 
 
 public class Index {
     ColorSensor pos1, pos2, pos3;
+    CRServo index, flapper;
+
     public String pos1color;
     public String pos2color;
     public  String pos3color;
@@ -21,11 +27,15 @@ public class Index {
     public Index(HardwareMap hardwareMap){
 
         this.pos1 = hardwareMap.get(ColorSensor.class, "color1");
+        this.index = hardwareMap.get(CRServo.class, "index");
+        this.flapper = hardwareMap.get(CRServo.class, "flapper");
         //this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");
         //this.pos3 = hardwareMap.get(ColorSensor.class, "pos3color");
         //this.indexmotor = hardwareMap.get(DcMotorEx.class, "indexmotor");
         //indexmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
     }
+
 
     public String read(String pos1color){
         if (pos1.green() > greenMax){
@@ -63,6 +73,14 @@ public class Index {
         //indexmotor.setTargetPosition(100);
         //set pos for each correct ball color...
     }
+    public void feed(double power){
+        flapper.setPower(power);
+
+
+
+
+    }
+
 
 
 }
