@@ -82,3 +82,11 @@ lint/tmp/
 
 .DS_Store
 /.idea
+
+# build caches
+caches/*
+native/*
+wrapper/*
+daemon/*
+.tmp/*
+android/FakeDependency.jar
