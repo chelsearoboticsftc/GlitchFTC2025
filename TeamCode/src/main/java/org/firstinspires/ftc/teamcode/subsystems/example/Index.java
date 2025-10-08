@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.example;
 
 
 
+import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -27,7 +28,7 @@ public class Index {
     public Index(HardwareMap hardwareMap){
 
         this.pos1 = hardwareMap.get(ColorSensor.class, "color1");
-        this.index = hardwareMap.get(CRServo.class, "index");
+        this.index = hardwareMap.get(CRServoImplEx.class, "index");
         this.flapper = hardwareMap.get(CRServo.class, "flapper");
         //this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");
         //this.pos3 = hardwareMap.get(ColorSensor.class, "pos3color");
@@ -79,6 +80,20 @@ public class Index {
 
 
 
+    }
+    public void rotate(){
+        //index.getController().setServoPosition(1, 0.000001);
+        index.setPower(-1);
+
+
+    }
+    public void stop() {
+        //index.getController().setServoPosition(1, 0.000001);
+        index.setPower(0);
+    }
+    public double getpower() {
+        //index.getController().setServoPosition(1, 0.000001);
+        return index.getPower();
     }
 
 

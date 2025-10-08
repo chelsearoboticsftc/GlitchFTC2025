@@ -24,7 +24,8 @@ public class BasicTeleopDrive extends LinearOpMode {
                             new Vector2d(-gamepad1.left_stick_y,
                                     -gamepad1.left_stick_x),
                             -gamepad1.right_stick_x));
-
+            telemetry.addData("power", index.getpower());
+            telemetry.update();
 
             if (gamepad1.x) {
                 intake.in();
@@ -36,12 +37,18 @@ public class BasicTeleopDrive extends LinearOpMode {
                 intake.stop();
             }
             if (gamepad1.a) {
-                index.feed(1);
-                sleep(1000);
                 index.feed(-1);
+                sleep(5000);
+                index.feed(0);
 
 
                 }
+            if (gamepad1.y){
+                index.rotate();
+                sleep(5000);
+                index.stop();
+
+            }
 
             }
         }
