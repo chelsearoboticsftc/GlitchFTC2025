@@ -11,17 +11,23 @@ public class Shooter {
 
     public Shooter(HardwareMap hardwareMap) {
         this.shooter_Reloader = hardwareMap.get(Servo.class, "shooter_Reloader");
+
+
     }
 
+
     public void init() {
-        shooter_Reloader.resetDeviceConfigurationForOpMode();
+
+
     }
 
     public void load() {
-        shooter_Reloader.setPosition(0.25);
+
+        shooter_Reloader.setPosition(0.4);
     }
 
     public void unload() {
+        shooter_Reloader.setDirection(Servo.Direction.REVERSE);
         shooter_Reloader.setPosition(0);
 
     }

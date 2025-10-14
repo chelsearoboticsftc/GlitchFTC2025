@@ -33,7 +33,7 @@ public class visiontest extends LinearOpMode{
         ExposureControl exposure = myVisionPortal.getCameraControl(ExposureControl.class);
         exposure.setMode(ExposureControl.Mode.Manual);
         exposure.setExposure(0, TimeUnit.MILLISECONDS);
-        
+
         while(opModeIsActive()){
 
 

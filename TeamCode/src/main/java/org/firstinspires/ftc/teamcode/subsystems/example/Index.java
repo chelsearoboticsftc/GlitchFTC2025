@@ -5,9 +5,11 @@ package org.firstinspires.ftc.teamcode.subsystems.example;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //theoretical index test code
@@ -15,7 +17,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class Index {
     ColorSensor pos1, pos2, pos3;
-    CRServo index, flapper;
+    CRServo flapper;
+    DcMotorEx index;
 
     public String pos1color;
     public String pos2color;
@@ -28,8 +31,11 @@ public class Index {
     public Index(HardwareMap hardwareMap){
 
         this.pos1 = hardwareMap.get(ColorSensor.class, "color1");
-        this.index = hardwareMap.get(CRServoImplEx.class, "index");
+        this.index = hardwareMap.get(DcMotorEx.class, "index");
         this.flapper = hardwareMap.get(CRServo.class, "flapper");
+        index.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        index.setPositionPIDFCoefficients(1.2);
+
         //this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");
         //this.pos3 = hardwareMap.get(ColorSensor.class, "pos3color");
         //this.indexmotor = hardwareMap.get(DcMotorEx.class, "indexmotor");
@@ -81,10 +87,14 @@ public class Index {
 
 
     }
-    public void rotate(){
+    public int rotate(){
         //index.getController().setServoPosition(1, 0.000001);
-        index.setPower(-1);
+        index.setTargetPosition(135);
 
+
+        index.setPower(-0.5);
+        index.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        return index.getCurrentPosition();
 
     }
     public void stop() {
