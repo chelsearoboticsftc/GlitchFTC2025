@@ -31,4 +31,7 @@ public class Shooter {
         shooter_Reloader.setPosition(0);
 
     }
+    public double whereservo(){
+        return shooter_Reloader.getPosition();
+    }
 }
