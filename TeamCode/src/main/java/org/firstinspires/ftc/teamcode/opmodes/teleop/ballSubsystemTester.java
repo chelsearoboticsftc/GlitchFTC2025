@@ -11,8 +11,8 @@ public class ballSubsystemTester extends LinearOpMode{
         Index index = new Index(hardwareMap);
         waitForStart();
         while (opModeIsActive()){
-            String color = index.read(index.pos1color);
-            telemetry.addData("color", color);
+
+
             telemetry.update();
 
         }

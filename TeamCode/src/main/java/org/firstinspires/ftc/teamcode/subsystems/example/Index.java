@@ -2,24 +2,36 @@ package org.firstinspires.ftc.teamcode.subsystems.example;
 
 
 
-import com.qualcomm.robotcore.hardware.CRServoImplEx;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.vision.opencv.PredominantColorProcessor.Swatch.ARTIFACT_GREEN;
+
+import android.util.Size;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.opencv.ImageRegion;
+import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 //theoretical index test code
+
+
+
 
 
 public class Index {
     ColorSensor pos1, pos2, pos3;
     CRServo flapper;
     DcMotorEx index;
-
+    PIDCoefficients pidvalues;
+    public PredominantColorProcessor.Result result;
+    public PredominantColorProcessor colorSensor;
+    public VisionPortal portal;
     public String pos1color;
     public String pos2color;
     public  String pos3color;
@@ -29,12 +41,29 @@ public class Index {
     //DcMotorEx indexmotor;
 
     public Index(HardwareMap hardwareMap){
-
+        colorSensor = new PredominantColorProcessor.Builder()
+                .setRoi(ImageRegion.asUnityCenterCoordinates(-0.1, 0.1, 0.1, -0.1))
+                .setSwatches(
+                        ARTIFACT_GREEN,
+                        PredominantColorProcessor.Swatch.ARTIFACT_PURPLE,
+                        PredominantColorProcessor.Swatch.RED,
+                        PredominantColorProcessor.Swatch.BLUE,
+                        PredominantColorProcessor.Swatch.YELLOW,
+                        PredominantColorProcessor.Swatch.BLACK,
+                        PredominantColorProcessor.Swatch.WHITE)
+                .build();
+        portal = new VisionPortal.Builder()
+                .addProcessor(colorSensor)
+                .setCameraResolution(new Size(320, 240))
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .build();
         this.pos1 = hardwareMap.get(ColorSensor.class, "color1");
         this.index = hardwareMap.get(DcMotorEx.class, "index");
         this.flapper = hardwareMap.get(CRServo.class, "flapper");
+        pidvalues.p = 1.4;
+        pidvalues.i = 0.1;
         index.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        index.setPositionPIDFCoefficients(1.2);
+        index.setPositionPIDFCoefficients(2);
 
         //this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");
         //this.pos3 = hardwareMap.get(ColorSensor.class, "pos3color");
@@ -44,44 +73,19 @@ public class Index {
     }
 
 
-    public String read(String pos1color){
-        if (pos1.green() > greenMax){
-            greenMax = pos1.green();
-        }
-        if (pos1.red() > redmax){
-            redmax = pos1.red();
-        }
-        if (pos1.blue() > bluemax){
-            bluemax = pos1.blue();
-        }
-        if (bluemax < 1800 && bluemax > 100 && redmax < 1000) {
-            //change 2100 fine tune no magic numbers, same for 700
-            //replace 300 with rgb values for green color ball
-            pos1color = "green";
-            bluemax = 0;
-            redmax = 0;
+    public PredominantColorProcessor.Swatch read(){
+        result = colorSensor.getAnalysis();
 
-        }
-        else if (bluemax > 1000 && bluemax > 100 && redmax > 1000) {
-            pos1color = "purple";
-            bluemax = 0;
-            redmax = 0;
-
-            }
-        else if (bluemax < 100 ) {
-            pos1color = "none";
-        }
-        return pos1color;
+        return result.closestSwatch;
 
         }
 
 
-    public void sort(String color){
-        //indexmotor.setTargetPosition(100);
-        //set pos for each correct ball color...
+    public void sort(){
+
     }
-    public void feed(double power){
-        flapper.setPower(power);
+    public void feed(){
+        flapper.setPower(1);
 
 
 
@@ -92,7 +96,7 @@ public class Index {
         index.setTargetPosition(135);
 
 
-        index.setPower(-0.5);
+        index.setPower(-1);
         index.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         return index.getCurrentPosition();
 
