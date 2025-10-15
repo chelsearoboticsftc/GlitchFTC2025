@@ -29,6 +29,8 @@ public class BasicTeleopDrive extends LinearOpMode {
                             -gamepad1.right_stick_x));
             telemetry.addData("power", index.getpower());
             telemetry.addData("color", index.read());
+            telemetry.addData("pos", shooter.whereservo());
+
 
             telemetry.update();
 
