@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.subsystems.example;
+package org.firstinspires.ftc.teamcode.subsystems.subsystems;
 
 
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.vision.opencv.PredominantColorProcessor.Swatch.ARTIFACT_GREEN;
 
 import android.util.Size;

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
-import org.firstinspires.ftc.teamcode.subsystems.example.Index;
-import org.firstinspires.ftc.teamcode.subsystems.example.SampleSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

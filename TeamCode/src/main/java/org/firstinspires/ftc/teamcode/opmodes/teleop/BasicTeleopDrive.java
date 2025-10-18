@@ -6,9 +6,9 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.example.Index;
-import org.firstinspires.ftc.teamcode.subsystems.example.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.example.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 
 @TeleOp

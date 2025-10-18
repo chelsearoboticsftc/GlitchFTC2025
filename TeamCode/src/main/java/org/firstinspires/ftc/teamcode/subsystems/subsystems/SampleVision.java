@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems.example;
+package org.firstinspires.ftc.teamcode.subsystems.subsystems;
 // This sample vision subsystem only includes the reading of the main apriltag for goals
 // it does not include obelisk detection or sorting at this time
 
