@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.subsystems.subsystems;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class shooter_Aim {
     CRServoImplEx Aim;
+
+    public shooter_Aim(HardwareMap hardwareMap) {
+    }
 
     public void setDirection(Servo.Direction direction) {
     }

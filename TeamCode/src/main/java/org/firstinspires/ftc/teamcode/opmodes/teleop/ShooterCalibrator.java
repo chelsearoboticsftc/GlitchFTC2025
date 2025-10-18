@@ -19,7 +19,7 @@ public class ShooterCalibrator extends LinearOpMode {
         double step = 100;
         double velocity = 0;
 
-        while(opModeIsActive()){
+        while (opModeIsActive()) {
             // A button presses increase velocity by "step"
             if (gamepad2.aWasPressed()) {
                 velocity += step;
@@ -31,20 +31,23 @@ public class ShooterCalibrator extends LinearOpMode {
             shooter.setMotorVelocity(velocity);
             this.telemetry.addData("Velocity", velocity);
             this.telemetry.update();
-            }
-
-            if (gamepad2.right_stick_y <= (-1)) {
-                Aim.setDirection(Servo.Direction.REVERSE);
-            }
-
-            if (gamepad2.right_stick_y >= (1)) {
-                Aim.setDirection(Servo.Direction.FORWARD);
-            if (Aim.getCurrentPosition()<=(0)) {
-                Aim.stop();
-            }
-            }
-            }
-
-
         }
-    }
+
+        if (gamepad2.right_stick_y <= (-0.5)) {
+            Aim.setDirection(Servo.Direction.REVERSE);
+        }
+
+        if (gamepad2.right_stick_y >= (0.5))
+            Aim.setDirection(Servo.Direction.FORWARD);
+
+
+        if (Aim.getCurrentPosition()<=(0)) {
+            Aim.stop();
+        }
+            }
+            }
+
+
+
+
+
