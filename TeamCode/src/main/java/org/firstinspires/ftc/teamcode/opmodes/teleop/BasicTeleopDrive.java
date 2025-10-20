@@ -6,9 +6,11 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.example.Index;
-import org.firstinspires.ftc.teamcode.subsystems.example.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.example.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
+import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
+
 @TeleOp
 public class BasicTeleopDrive extends LinearOpMode {
     @Override
@@ -26,6 +28,7 @@ public class BasicTeleopDrive extends LinearOpMode {
                                     -gamepad1.left_stick_x),
                             -gamepad1.right_stick_x));
             telemetry.addData("power", index.getpower());
+            telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
 
 
@@ -44,9 +47,9 @@ public class BasicTeleopDrive extends LinearOpMode {
                 intake.stop();
             }
             if (gamepad1.a) {
-                index.feed(1);
+                index.feed();
                 sleep(1000);
-                index.feed(0);
+                index.feed();
 
 
                 }
@@ -55,7 +58,12 @@ public class BasicTeleopDrive extends LinearOpMode {
 
 
             }
-
+            if(index.result.closestSwatch.equals(PredominantColorProcessor.Swatch.ARTIFACT_GREEN)){
+                sleep(2500);
+                index.feed();
+                sleep(1000);
+                index.stop();
+            }
 
             }
         }

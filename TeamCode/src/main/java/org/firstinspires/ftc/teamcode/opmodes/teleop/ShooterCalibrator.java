@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.subsystems.example.SmartShooter;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.SmartShooter;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.shooter_Aim;
 
 @TeleOp
 public class ShooterCalibrator extends LinearOpMode {
@@ -10,23 +13,41 @@ public class ShooterCalibrator extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SmartShooter shooter = new SmartShooter(hardwareMap);
 
+        shooter_Aim Aim = new shooter_Aim(hardwareMap);
+
         waitForStart();
+        double step = 100;
+        double velocity = 1300;
 
-        double step = 0.1;
-        double velocity = 0;
-
-        while(opModeIsActive()){
+        while (opModeIsActive()) {
             // A button presses increase velocity by "step"
-            if (gamepad1.aWasPressed()) {
+            if (gamepad2.aWasPressed()) {
                 velocity += step;
             }
             // B button presses reset velocity to 0
             if (gamepad2.bWasPressed()) {
-                velocity = 0;
+                velocity = 1300;
             }
             shooter.setMotorVelocity(velocity);
             this.telemetry.addData("Velocity", velocity);
             this.telemetry.update();
         }
-    }
-}
+
+        if (gamepad2.right_stick_y <= (-0.5)) {
+            //Aim.setDirection(Servo.Direction.REVERSE);
+        }
+
+        if (gamepad2.right_stick_y >= (0.5))
+            //Aim.setDirection(Servo.Direction.FORWARD);
+
+
+        if (Aim.getCurrentPosition()<=(0)) {
+            //Aim.stop();
+        }
+            }
+            }
+
+
+
+
+
