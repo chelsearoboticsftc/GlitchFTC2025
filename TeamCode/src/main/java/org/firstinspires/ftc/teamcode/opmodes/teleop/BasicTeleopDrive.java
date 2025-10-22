@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.SmartShooter;
 
 @TeleOp
 public class BasicTeleopDrive extends LinearOpMode {
@@ -19,6 +20,7 @@ public class BasicTeleopDrive extends LinearOpMode {
         Intake intake = new Intake(hardwareMap);
         Index index = new Index(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
+        SmartShooter smartshooter = new SmartShooter(hardwareMap);
         waitForStart();
 
         while (opModeIsActive()) {
@@ -34,27 +36,30 @@ public class BasicTeleopDrive extends LinearOpMode {
 
             telemetry.update();
 
-            if (gamepad1.x) {
+            if (gamepad2.x) {
                 intake.in();
             }
-            if (gamepad1.b) {
+            if (gamepad2.b) {
                 shooter.load();
-                sleep(5000);
+                sleep(500);
                 shooter.unload();
 
             }
-            if (!gamepad1.b && !gamepad1.x){
+            if (!gamepad2.b && !gamepad2.x){
                 intake.stop();
             }
-            if (gamepad1.a) {
+            if (gamepad2.a) {
                 index.feed();
                 sleep(1000);
-                index.feed();
+                index.stop();
+
 
 
                 }
-            if (gamepad1.y){
+            if (gamepad2.y){
+                smartshooter.fullpower();
                 index.rotate();
+
 
 
             }

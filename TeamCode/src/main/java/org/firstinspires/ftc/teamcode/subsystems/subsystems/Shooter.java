@@ -20,16 +20,17 @@ public class Shooter {
     }
 
     public void load() {
-
-        shooter_Reloader.setPosition(0.4);
+        shooter_Reloader.setDirection(Servo.Direction.FORWARD);
+        shooter_Reloader.setPosition(0.2);
     }
 
     public void unload() {
-        shooter_Reloader.setDirection(Servo.Direction.REVERSE);
-        shooter_Reloader.setPosition(0);
+        shooter_Reloader.setDirection(Servo.Direction.FORWARD);
+        shooter_Reloader.setPosition(0.6);
 
     }
     public double whereservo(){
         return shooter_Reloader.getPosition();
     }
+
 }

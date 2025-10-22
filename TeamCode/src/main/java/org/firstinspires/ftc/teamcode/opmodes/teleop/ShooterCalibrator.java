@@ -16,19 +16,20 @@ public class ShooterCalibrator extends LinearOpMode {
         shooter_Aim Aim = new shooter_Aim(hardwareMap);
 
         waitForStart();
-        double step = 100;
-        double velocity = 1300;
+        double step = 6000;
+        double velocity = 0;
 
         while (opModeIsActive()) {
             // A button presses increase velocity by "step"
             if (gamepad2.aWasPressed()) {
                 velocity += step;
             }
+            shooter.setMotorVelocity(velocity);
             // B button presses reset velocity to 0
             if (gamepad2.bWasPressed()) {
-                velocity = 1300;
+                shooter.fullpower();
             }
-            shooter.setMotorVelocity(velocity);
+            //shooter.setMotorVelocity(velocity);
             this.telemetry.addData("Velocity", velocity);
             this.telemetry.update();
         }
