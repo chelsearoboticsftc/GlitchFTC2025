@@ -2,16 +2,15 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.subsystems.subsystems.SmartShooter;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.shooter_Aim;
 
 @TeleOp
 public class ShooterCalibrator extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        SmartShooter shooter = new SmartShooter(hardwareMap);
+        Shooter shooter = new Shooter(hardwareMap);
 
         shooter_Aim Aim = new shooter_Aim(hardwareMap);
 

@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
-import org.firstinspires.ftc.teamcode.subsystems.subsystems.SmartShooter;
 
 @TeleOp
 public class BasicTeleopDrive extends LinearOpMode {
@@ -20,7 +19,7 @@ public class BasicTeleopDrive extends LinearOpMode {
         Intake intake = new Intake(hardwareMap);
         Index index = new Index(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
-        SmartShooter smartshooter = new SmartShooter(hardwareMap);
+
         waitForStart();
 
         while (opModeIsActive()) {
@@ -57,7 +56,7 @@ public class BasicTeleopDrive extends LinearOpMode {
 
                 }
             if (gamepad2.y){
-                smartshooter.fullpower();
+                shooter.fullpower();
                 index.rotate();
 
 

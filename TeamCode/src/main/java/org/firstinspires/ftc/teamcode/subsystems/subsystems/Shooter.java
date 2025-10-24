@@ -1,14 +1,50 @@
 package org.firstinspires.ftc.teamcode.subsystems.subsystems;
 
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.utils.LookupTable;
 
 public class Shooter {
 
     Servo shooter_Reloader;
-
+    DcMotorEx motor, motor2;
+    private final LookupTable distanceToVelocity = new LookupTable(ShooterConstants.LOOKUP_TABLE);
     public Shooter(HardwareMap hardwareMap) {
         this.shooter_Reloader = hardwareMap.get(Servo.class, "shooter_Reloader");
+        this.motor = hardwareMap.get(DcMotorEx.class, "shooter");
+        this.motor2 = hardwareMap.get(DcMotorEx.class, "shooter2");
+        motor.setZeroPowerBehavior(ShooterConstants.ZERO_POWER_BEHAVIOR);
+        motor2.setZeroPowerBehavior(ShooterConstants.ZERO_POWER_BEHAVIOR);
+
+        //This defines the motor direction (forward or reversed)
+        motor2.setDirection(ShooterConstants.MOTOR_DIRECTION);
+        //This defines the motor direction (forward or reversed)
+        motor.setDirection(ShooterConstants.MOTOR_DIRECTION);
+
+        /* This defines the motor velocity PIDF gains.  Velocity PIDF values determine control    *
+         * around a target velocity (setTargetVelocity) OR how fast the system responds to a      *
+         * change in set position (setTargetPosition).                                            */
+        motor.setVelocityPIDFCoefficients(
+                ShooterConstants.VELOCITY_P, //Proportional Gain
+                ShooterConstants.VELOCITY_I, //Integral Gain
+                ShooterConstants.VELOCITY_D, //Derivative Gain
+                ShooterConstants.VELOCITY_F);//Feed Forward Gain
+        motor2.setVelocityPIDFCoefficients(
+                ShooterConstants.VELOCITY_P, //Proportional Gain
+                ShooterConstants.VELOCITY_I, //Integral Gain
+                ShooterConstants.VELOCITY_D, //Derivative Gain
+                ShooterConstants.VELOCITY_F);//Feed Forward Gain
+
+        /* This defines the motor position PID P gain. Position control only needs P gain since   *
+         * once the system reaches the target position since once at position you're only         *
+         * disturbances in the system                                                             */
+        motor.setPositionPIDFCoefficients(
+                ShooterConstants.POSITION_P);//Proportional Gain
+        motor2.setPositionPIDFCoefficients(
+                ShooterConstants.POSITION_P);//Proportional Gain
+
 
 
     }
@@ -33,4 +69,22 @@ public class Shooter {
         return shooter_Reloader.getPosition();
     }
 
+    public void shoot(double distance) {
+        double velocity = distanceToVelocity.interpolate(distance);
+        this.setMotorVelocity(velocity);
+
+        // TODO - is ball already engaged, or does it need to be dropped,
+        // maybe after a short delay to allow the motor to spin up?
+    }
+
+    public void setMotorVelocity(double angularRate) {
+
+        this.motor.setVelocity(angularRate);
+        this.motor2.setVelocity(angularRate);
+    }
+    public void fullpower(){
+        this.motor.setPower(1);
+        this.motor2.setPower(1);
+    }
 }
+
