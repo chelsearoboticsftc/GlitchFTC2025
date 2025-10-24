@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems.example;
+package org.firstinspires.ftc.teamcode.subsystems.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -6,11 +6,11 @@ import org.firstinspires.ftc.teamcode.utils.LookupTable.Pair;
 
 import java.util.List;
 
-public class SmartShooterConstants {
+public class ShooterConstants {
     // Note - any changes to these constants will require recalibration!
     public static final String MOTOR_NAME = "shooter";
     public static final DcMotor.ZeroPowerBehavior ZERO_POWER_BEHAVIOR = DcMotor.ZeroPowerBehavior.BRAKE;
-    public static final DcMotorSimple.Direction MOTOR_DIRECTION = DcMotorSimple.Direction.REVERSE;
+    public static final DcMotorSimple.Direction MOTOR_DIRECTION = DcMotorSimple.Direction.FORWARD;
     public static final double VELOCITY_P = 1.0;
     public static final double VELOCITY_I = 0.0;
     public static final double VELOCITY_D = 0.0;

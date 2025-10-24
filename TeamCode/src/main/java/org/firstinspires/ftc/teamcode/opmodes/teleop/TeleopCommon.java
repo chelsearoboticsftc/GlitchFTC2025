@@ -1,8 +1,10 @@
+
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -12,14 +14,14 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 
 @TeleOp
-public class BasicTeleopDrive extends LinearOpMode {
+@Disabled
+public class TeleopCommon extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         Intake intake = new Intake(hardwareMap);
         Index index = new Index(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
-
         waitForStart();
 
         while (opModeIsActive()) {
@@ -35,30 +37,27 @@ public class BasicTeleopDrive extends LinearOpMode {
 
             telemetry.update();
 
-            if (gamepad2.x) {
+            if (gamepad1.x) {
                 intake.in();
             }
-            if (gamepad2.b) {
+            if (gamepad1.b) {
                 shooter.load();
-                sleep(500);
+                sleep(5000);
                 shooter.unload();
 
             }
-            if (!gamepad2.b && !gamepad2.x){
+            if (!gamepad1.b && !gamepad1.x){
                 intake.stop();
             }
-            if (gamepad2.a) {
+            if (gamepad1.a) {
                 index.feed();
                 sleep(1000);
-                index.stop();
+                index.feed();
 
 
-
-                }
-            if (gamepad2.y){
-                shooter.fullpower();
+            }
+            if (gamepad1.y){
                 index.rotate();
-
 
 
             }
@@ -69,7 +68,6 @@ public class BasicTeleopDrive extends LinearOpMode {
                 index.stop();
             }
 
-            }
         }
-        }
-
+    }
+}
