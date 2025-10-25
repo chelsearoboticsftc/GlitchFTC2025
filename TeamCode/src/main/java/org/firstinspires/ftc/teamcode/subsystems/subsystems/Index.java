@@ -89,26 +89,29 @@ public class Index {
 
 
 
-
     }
-    public int rotate(){
+    public int rotate(int pos){
         //index.getController().setServoPosition(1, 0.000001);
-        index.setTargetPosition(135);
+        index.setTargetPosition(pos);
 
 
 
         index.setPower(-1);
         index.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         return index.getCurrentPosition();
 
     }
     public void stop() {
         //index.getController().setServoPosition(1, 0.000001);
-        index.setPower(0);
+        flapper.setPower(0);
     }
     public double getpower() {
         //index.getController().setServoPosition(1, 0.000001);
-        return index.getPower();
+        return index.getCurrentPosition();
+    }
+    public boolean motorbusy(){
+        return index.isBusy();
     }
 
 

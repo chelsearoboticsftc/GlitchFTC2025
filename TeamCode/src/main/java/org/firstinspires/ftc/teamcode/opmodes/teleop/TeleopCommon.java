@@ -57,7 +57,7 @@ public class TeleopCommon extends LinearOpMode {
 
             }
             if (gamepad1.y){
-                index.rotate();
+                index.rotate(135);
 
 
             }
