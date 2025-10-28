@@ -18,6 +18,7 @@ public class basicAuton extends LinearOpMode {
         Index index = new Index(hardwareMap);
         // Wait for the driver to press start
         waitForStart();
+        shooter.fullpower(2500);
 
         Thread.sleep((2000));
 
@@ -27,8 +28,21 @@ public class basicAuton extends LinearOpMode {
         // We create an "action" to drive forward (along the X-axis) by 120 inches.
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
-                        .lineToX(120)
+
+                        .lineToX(-12)
+                        .turn(4.5* Math.PI/180)
+
                         .build()
         );
+        for (int i = 0; i < 4; i++) {
+
+            shooter.load();
+            Thread.sleep(500);
+            shooter.unload();
+            index.feed();
+            Thread.sleep(1000);
+            index.stop();
+
+        }
     }
 }

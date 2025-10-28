@@ -21,22 +21,12 @@ public class BasicTeleopDrive extends LinearOpMode {
         Shooter shooter = new Shooter(hardwareMap);
         int indexclick = 0;
         double speed = 0.75;
-
+        boolean firing = false;
         waitForStart();
 
         while (opModeIsActive()) {
 
-            double left_y = gamepad1.left_stick_y *speed;
-            double left_x = gamepad1.left_stick_x *speed;
-            double right_x= -gamepad1.right_stick_x*speed;
-            drive.setDrivePowers(
-                    new PoseVelocity2d(
-                            new Vector2d(left_y,
-                                    left_x),
-                            right_x));
-            telemetry.addData("power", index.getpower());
-            telemetry.addData("color", index.read());
-            telemetry.addData("pos", shooter.whereservo());
+
 
 
             telemetry.update();
@@ -47,16 +37,23 @@ public class BasicTeleopDrive extends LinearOpMode {
                 speed = 0.75;
             }
             if (gamepad2.x) {
+                index.rotate(0);
                 intake.in();
+                indexclick=0;
             }
             if (gamepad2.b) {
 
 
                     index.feed();
+                    firing = true;
+
                     Thread.sleep(1000);
+                    firing = false;
+
                     index.stop();
                     shooter.load();
                     Thread.sleep(500);
+                    firing = false;
                     shooter.unload();
 
 
@@ -72,38 +69,52 @@ public class BasicTeleopDrive extends LinearOpMode {
 
             if (gamepad2.y){
                 indexclick += 1 ;
-                shooter.fullpower();
+                shooter.fullpower(2000);
                 if (indexclick < 2){
                     index.rotate(135);
+                    firing = true;
                     Thread.sleep(3000);
+                    firing = false;
 
                 }
                 else {
                     int pos = (indexclick*97)+135;
                     index.rotate(pos);
+                    firing = true;
                     Thread.sleep(3000);
+                    firing = false;
                 }
 
 
 
                 index.feed();
+                firing = true;
                 Thread.sleep(1000);
+                firing = false;
                 index.stop();
-                shooter.load();
-                Thread.sleep(500);
-                shooter.unload();
+
 
 
 
 
 
             }
-            if(index.result.closestSwatch.equals(PredominantColorProcessor.Swatch.ARTIFACT_GREEN)){
-                sleep(2500);
-                index.feed();
-                sleep(1000);
-                index.stop();
-            }
+
+
+
+            if(!firing){
+                firing = false;
+                double left_y = gamepad1.left_stick_y *speed;
+                double left_x = gamepad1.left_stick_x *speed;
+                double right_x= -gamepad1.right_stick_x*speed;
+                drive.setDrivePowers(
+                    new PoseVelocity2d(
+                            new Vector2d(left_y,
+                                    left_x),
+                            right_x));}
+            telemetry.addData("power", index.getpower());
+            telemetry.addData("color", index.read());
+            telemetry.addData("pos", shooter.whereservo());
 
             }
         }

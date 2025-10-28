@@ -26,7 +26,7 @@ public class ShooterCalibrator extends LinearOpMode {
             shooter.setMotorVelocity(velocity);
             // B button presses reset velocity to 0
             if (gamepad2.bWasPressed()) {
-                shooter.fullpower();
+                shooter.fullpower(5000);
             }
             //shooter.setMotorVelocity(velocity);
             this.telemetry.addData("Velocity", velocity);

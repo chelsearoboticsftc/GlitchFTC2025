@@ -82,9 +82,9 @@ public class Shooter {
         this.motor.setVelocity(angularRate);
         this.motor2.setVelocity(angularRate);
     }
-    public void fullpower(){
-        this.motor.setVelocity(5600);
-        this.motor2.setVelocity(5600);
+    public void fullpower(int velocity){
+        this.motor.setVelocity(velocity);
+        this.motor2.setVelocity(velocity);
 
     }
 }
