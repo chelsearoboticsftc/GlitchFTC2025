@@ -11,6 +11,8 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 
+import kotlin.Unit;
+
 @TeleOp
 public class BasicTeleopDrive extends LinearOpMode {
     @Override
@@ -22,6 +24,15 @@ public class BasicTeleopDrive extends LinearOpMode {
         int indexclick = 0;
         double speed = 0.75;
         boolean firing = false;
+        double load_elapsed;
+        double load_start=0;
+        double reload_start= 0;
+        double reload_elapsed;
+        double index_start=0;
+        double index_relapsed;
+        double index_feed_start=0;
+        double index_feed_elapsed;
+
         waitForStart();
 
         while (opModeIsActive()) {
@@ -42,19 +53,15 @@ public class BasicTeleopDrive extends LinearOpMode {
                 indexclick=0;
             }
             if (gamepad2.b) {
-
-
                     index.feed();
-                    firing = true;
 
-                    Thread.sleep(1000);
-                    firing = false;
+                    load_start = getRuntime();
 
-                    index.stop();
+
+
                     shooter.load();
-                    Thread.sleep(500);
-                    firing = false;
-                    shooter.unload();
+                    reload_start = getRuntime();
+
 
 
 
@@ -67,31 +74,26 @@ public class BasicTeleopDrive extends LinearOpMode {
 
 
 
-            if (gamepad2.y){
+            if (gamepad2.yWasPressed()){
                 indexclick += 1 ;
                 shooter.fullpower(2000);
                 if (indexclick < 2){
                     index.rotate(135);
-                    firing = true;
-                    Thread.sleep(3000);
-                    firing = false;
+
+                    index_start = getRuntime();
+
+
 
                 }
                 else {
                     int pos = (indexclick*97)+135;
                     index.rotate(pos);
-                    firing = true;
-                    Thread.sleep(3000);
-                    firing = false;
+                    index_start = getRuntime();
                 }
 
 
 
-                index.feed();
-                firing = true;
-                Thread.sleep(1000);
-                firing = false;
-                index.stop();
+
 
 
 
@@ -99,23 +101,45 @@ public class BasicTeleopDrive extends LinearOpMode {
 
 
             }
+            if (index.read() == PredominantColorProcessor.Swatch.WHITE){
+                index.rotate(0);
 
 
+            }
 
-            if(!firing){
-                firing = false;
-                double left_y = gamepad1.left_stick_y *speed;
-                double left_x = gamepad1.left_stick_x *speed;
-                double right_x= -gamepad1.right_stick_x*speed;
-                drive.setDrivePowers(
-                    new PoseVelocity2d(
-                            new Vector2d(left_y,
-                                    left_x),
-                            right_x));}
+            index_feed_elapsed = getRuntime()-index_feed_start;
+            load_elapsed = getRuntime()-load_start;
+            reload_elapsed = getRuntime() - reload_start;
+            index_relapsed = getRuntime() - index_start;
+            if(load_elapsed > 1 && load_start !=0){
+
+                index.stop();
+            }
+            if(index_feed_elapsed > 1 && index_feed_start !=0){
+
+                index.stop();
+            }
+            if(reload_elapsed > 0.5 && reload_start !=0){
+
+                shooter.unload();
+            }
+            if(index_relapsed > 3 && index_start !=0){
+                index.feed();
+                index_feed_start = getRuntime();
+
+            }
+
+            double left_y = gamepad1.left_stick_y *speed;
+            double left_x = gamepad1.left_stick_x *speed;
+            double right_x= -gamepad1.right_stick_x*speed;
+            drive.setDrivePowers(
+                new PoseVelocity2d(
+                        new Vector2d(left_y,
+                                left_x),
+                        right_x));
             telemetry.addData("power", index.getpower());
             telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
-
             }
         }
         }

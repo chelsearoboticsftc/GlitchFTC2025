@@ -4,12 +4,13 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
-import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name = "Drive Forward 10 Feet Delay 2 Sec", group = "Linear OpMode")
-public class basicAuton extends LinearOpMode {
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
+
+@Autonomous
+public class blue_close_Auton extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Initialize MecanumDrive. The starting pose is (0, 0) with a 0-degree heading.
@@ -26,14 +27,7 @@ public class basicAuton extends LinearOpMode {
 
         // Road Runner uses inches, so we convert 10 feet to 120 inches.
         // We create an "action" to drive forward (along the X-axis) by 120 inches.
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(0, 0, 0))
 
-                        .lineToX(-12)
-                        .turn(4.5* Math.PI/180)
-
-                        .build()
-        );
         for (int i = 0; i < 4; i++) {
 
             shooter.load();
