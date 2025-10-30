@@ -34,6 +34,7 @@ public class BasicTeleopDrive extends LinearOpMode {
         double index_feed_elapsed;
 
         waitForStart();
+        shooter.fullpower(3000);
 
         while (opModeIsActive()) {
 
@@ -55,12 +56,9 @@ public class BasicTeleopDrive extends LinearOpMode {
             if (gamepad2.b) {
                     index.feed();
 
+
                     load_start = getRuntime();
 
-
-
-                    shooter.load();
-                    reload_start = getRuntime();
 
 
 
@@ -100,6 +98,7 @@ public class BasicTeleopDrive extends LinearOpMode {
 
 
 
+
             }
             if (index.read() == PredominantColorProcessor.Swatch.WHITE){
                 index.rotate(0);
@@ -109,25 +108,25 @@ public class BasicTeleopDrive extends LinearOpMode {
 
             index_feed_elapsed = getRuntime()-index_feed_start;
             load_elapsed = getRuntime()-load_start;
-            reload_elapsed = getRuntime() - reload_start;
+
             index_relapsed = getRuntime() - index_start;
+
             if(load_elapsed > 1 && load_start !=0){
 
                 index.stop();
+                load_start = 0;
+                shooter.load();
+                 Thread.sleep(500);
+                 shooter.unload();
             }
-            if(index_feed_elapsed > 1 && index_feed_start !=0){
-
-                index.stop();
-            }
+            reload_elapsed = getRuntime() - reload_start;
+            telemetry.addData("time",reload_elapsed);
+            telemetry.update();
             if(reload_elapsed > 0.5 && reload_start !=0){
 
                 shooter.unload();
             }
-            if(index_relapsed > 3 && index_start !=0){
-                index.feed();
-                index_feed_start = getRuntime();
 
-            }
 
             double left_y = gamepad1.left_stick_y *speed;
             double left_x = gamepad1.left_stick_x *speed;

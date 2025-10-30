@@ -19,6 +19,7 @@ public class blue_far_Auton extends LinearOpMode {
         // Wait for the driver to press start
         waitForStart();
         shooter.fullpower(4500);
+        index.holdpos();
 
         Thread.sleep((2000));
 
@@ -34,8 +35,9 @@ public class blue_far_Auton extends LinearOpMode {
 
                         .build()
         );
-        for (int i = 0; i < 4; i++) {
 
+        for (int i = 0; i < 4; i++) {
+            index.holdpos();
             shooter.load();
             Thread.sleep(500);
             shooter.unload();
@@ -44,5 +46,7 @@ public class blue_far_Auton extends LinearOpMode {
             index.stop();
 
         }
+        index.rotate(-135);
+        index.resetencoder();
     }
 }

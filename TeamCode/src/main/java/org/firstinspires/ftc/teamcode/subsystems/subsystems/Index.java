@@ -113,7 +113,13 @@ public class Index {
     public boolean motorbusy(){
         return index.isBusy();
     }
-
+    public void holdpos(){
+        index.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        index.setTargetPosition(index.getTargetPosition());
+    }
+    public void resetencoder(){
+        index.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
 
 }
