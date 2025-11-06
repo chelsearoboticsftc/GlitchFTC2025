@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.shooter_Aim;
 
@@ -14,6 +16,10 @@ public class ShooterCalibrator extends LinearOpMode {
         Shooter shooter = new Shooter(hardwareMap);
 
         shooter_Aim Aim = new shooter_Aim(hardwareMap);
+
+        Index flapper = new Index(hardwareMap);
+
+        Shooter shooter_Reloader = new Shooter(hardwareMap)
 
         waitForStart();
         double step = 50;
@@ -33,6 +39,7 @@ public class ShooterCalibrator extends LinearOpMode {
             this.telemetry.addData("Velocity", velocity);
             this.telemetry.update();
 
+
         }
 
         if (gamepad2.right_stick_y <= (-0.5)) {
@@ -46,8 +53,14 @@ public class ShooterCalibrator extends LinearOpMode {
         if (Aim.getCurrentPosition()<=(0)) {
             //Aim.stop();
         }
-            }
-            }
+        if (gamepad2.bWasPressed())
+            flapper.feed();
+            flapper.stop();
+
+            shooter_Reloader.load();
+            shooter_Reloader.unload();
+        }
+}
 
 
 
