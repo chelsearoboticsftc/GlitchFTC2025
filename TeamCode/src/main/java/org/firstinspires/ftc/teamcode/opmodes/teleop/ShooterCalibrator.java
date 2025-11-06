@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.shooter_Aim;
 
 @TeleOp
-@Disabled
 public class ShooterCalibrator extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
