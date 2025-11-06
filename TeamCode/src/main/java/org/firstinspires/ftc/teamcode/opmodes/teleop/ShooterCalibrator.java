@@ -17,7 +17,7 @@ public class ShooterCalibrator extends LinearOpMode {
         shooter_Aim Aim = new shooter_Aim(hardwareMap);
 
         waitForStart();
-        double step = 500;
+        double step = 50;
         double velocity = 3000;
 
         while (opModeIsActive()) {
