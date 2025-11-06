@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import kotlin.math.UMathKt;
 
 @TeleOp
+@Disabled
 public class rgb_readout extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {

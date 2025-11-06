@@ -45,5 +45,13 @@ public class red_far_Auton extends LinearOpMode {
             index.stop();
 
         }
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
+
+                        .lineToX(-20)
+
+
+                        .build()
+        );
     }
 }

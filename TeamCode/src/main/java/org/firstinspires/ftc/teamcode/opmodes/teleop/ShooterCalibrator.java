@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.shooter_Aim;
 
 @TeleOp
+@Disabled
 public class ShooterCalibrator extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -15,22 +17,23 @@ public class ShooterCalibrator extends LinearOpMode {
         shooter_Aim Aim = new shooter_Aim(hardwareMap);
 
         waitForStart();
-        double step = 6000;
-        double velocity = 0;
+        double step = 500;
+        double velocity = 3000;
 
         while (opModeIsActive()) {
             // A button presses increase velocity by "step"
-            if (gamepad2.aWasPressed()) {
+            if (gamepad2.rightBumperWasPressed()) {
                 velocity += step;
             }
             shooter.setMotorVelocity(velocity);
             // B button presses reset velocity to 0
-            if (gamepad2.bWasPressed()) {
-                shooter.fullpower(5000);
+            if (gamepad2.leftBumperWasPressed()) {
+                velocity -= -step;
             }
             //shooter.setMotorVelocity(velocity);
             this.telemetry.addData("Velocity", velocity);
             this.telemetry.update();
+
         }
 
         if (gamepad2.right_stick_y <= (-0.5)) {

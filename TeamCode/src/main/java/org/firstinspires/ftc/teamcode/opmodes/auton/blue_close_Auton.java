@@ -19,7 +19,7 @@ public class blue_close_Auton extends LinearOpMode {
         Index index = new Index(hardwareMap);
         // Wait for the driver to press start
         waitForStart();
-        shooter.fullpower(2500);
+        shooter.fullpower(2250);
 
         Thread.sleep((2000));
 
@@ -27,7 +27,15 @@ public class blue_close_Auton extends LinearOpMode {
 
         // Road Runner uses inches, so we convert 10 feet to 120 inches.
         // We create an "action" to drive forward (along the X-axis) by 120 inches.
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
 
+
+
+                        .lineToX(60)
+
+                        .build()
+        );
         for (int i = 0; i < 4; i++) {
 
             shooter.load();
@@ -38,5 +46,15 @@ public class blue_close_Auton extends LinearOpMode {
             index.stop();
 
         }
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+                        .turn(-20* Math.PI/180)
+                        .lineToX(40)
+
+                        .build()
+        );
+
     }
 }

@@ -22,7 +22,8 @@ public class BasicTeleopDrive extends LinearOpMode {
         Index index = new Index(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
         int indexclick = 0;
-        double speed = 0.75;
+        double speed = 0.5;
+        int velocity = 3000;
         boolean firing = false;
         double load_elapsed;
         double load_start=0;
@@ -36,13 +37,15 @@ public class BasicTeleopDrive extends LinearOpMode {
         waitForStart();
         shooter.fullpower(3000);
 
+
         while (opModeIsActive()) {
+            shooter.fullpower(velocity);
 
 
 
 
             telemetry.update();
-            if(gamepad1.left_bumper){
+            if(gamepad1.leftBumperWasPressed()){
                 speed = 1.0;
             }
             else {
@@ -72,34 +75,24 @@ public class BasicTeleopDrive extends LinearOpMode {
 
 
 
-            if (gamepad2.yWasPressed()){
-                indexclick += 1 ;
-                shooter.fullpower(2000);
-                if (indexclick < 2){
-                    index.rotate(135);
 
-                    index_start = getRuntime();
-
-
-
-                }
-                else {
-                    int pos = (indexclick*97)+135;
-                    index.rotate(pos);
-                    index_start = getRuntime();
-                }
-
-
-
-
-
-
-
-
-
-
-
+            if(gamepad2.leftBumperWasPressed()){
+                velocity-= 250;
             }
+            if (gamepad2.rightBumperWasPressed()){
+                velocity+= 250;
+            }
+
+
+
+
+
+
+
+
+
+
+
             if (index.read() == PredominantColorProcessor.Swatch.WHITE){
                 index.rotate(0);
 
