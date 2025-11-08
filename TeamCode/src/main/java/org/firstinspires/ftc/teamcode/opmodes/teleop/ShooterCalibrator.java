@@ -19,7 +19,7 @@ public class ShooterCalibrator extends LinearOpMode {
 
         Index flapper = new Index(hardwareMap);
 
-        Shooter shooter_Reloader = new Shooter(hardwareMap)
+        Shooter shooter_Reloader = new Shooter(hardwareMap);
 
         waitForStart();
         double step = 50;
@@ -33,9 +33,9 @@ public class ShooterCalibrator extends LinearOpMode {
             shooter.setMotorVelocity(velocity);
             // B button presses reset velocity to 0
             if (gamepad2.leftBumperWasPressed()) {
-                velocity -= -step;
+                velocity -= step;
             }
-            //shooter.setMotorVelocity(velocity);
+            shooter.setMotorVelocity(velocity);
             this.telemetry.addData("Velocity", velocity);
             this.telemetry.update();
 
@@ -53,7 +53,7 @@ public class ShooterCalibrator extends LinearOpMode {
         if (Aim.getCurrentPosition()<=(0)) {
             //Aim.stop();
         }
-        if (gamepad2.bWasPressed())
+        if(gamepad2.bWasPressed())
             flapper.feed();
             flapper.stop();
 

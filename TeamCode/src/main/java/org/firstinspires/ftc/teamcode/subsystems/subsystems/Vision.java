@@ -1,57 +1,68 @@
 package org.firstinspires.ftc.teamcode.subsystems.subsystems;
+// This sample vision subsystem only includes the reading of the main apriltag for goals
+// it does not include obelisk detection or sorting at this time
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import android.util.Size;
+
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.hardware.limelightvision.LLResult;
-
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import com.qualcomm.robotcore.hardware.IMU;
 
-import java.util.List;
-
-public class Vision {
-
-    //Declare HW objects here
-
-    //Example declare a DcMotorEx object as part of this class called 'motorName'
+public class Vision{
 
     Limelight3A limelight;
+    LLResult result;
+    IMU imu;
 
-
-    public Vision(HardwareMap hardwareMap) {
-        //Constructor for the SampleSubsystem class.  This code is called everytime you create
-        //an object of this class type.  Rename to match your class name.
-
-        //'this' keyword is to eliminate the confusion between objects/attributes which are part of and parameters
-        // this class and with the same name.  It refers to objects in the SampleSubsystem class in this case
-
-        //Device names in hardwareMap.get(class,deviceName) must match names from Control Hub
-        //configuration exactly.  This is the connection with the Control Hub Config
-
-        //Example code defining a DcMotor object to a motor in the config called "motorName"
-
+    public Vision(HardwareMap hardwareMap){
         this.limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        this.limelight.setPollRateHz(100);
+        this.imu = hardwareMap.get(IMU.class, "imu");
 
+        //you have to call SampleLimelight limelight; Then limelight.start() in your OpMode
     }
-
-    /* Standard functions.  All Chelsea Robotics subsystems shall have init() and update() these  *
-     * methods defined. Leave empty if not needed!                                                */
-    public void init() {
-
-
-        limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
-        limelight.start(); // This tells Limelight to start looking!
+    public LLResult getresult(){
+        return limelight.getLatestResult();
     }
-    public void read() {
-        LLResult result = limelight.getLatestResult();
-        List<LLResultTypes.FiducialResult> fiducials = result.getFiducialResults();
-        for (LLResultTypes.FiducialResult fr : fiducials) {
-            telemetry.addData("ID:", fr.getFiducialId());
-
+    public Pose2d getRobotPos(){
+        //for now just setting to zero if you can't see the apriltag.
+        double x = 0;
+        double y = 0;
+        double heading = imu.getRobotYawPitchRollAngles().getYaw();
+        if (result != null && result.isValid()) {
+            Pose3D botpose = result.getBotpose();
+            if (botpose != null) {
+                x = botpose.getPosition().x;
+                y = botpose.getPosition().y;
+            }
         }
+        return new Pose2d(x, y, heading);
     }
+    public void setPipeLine(int pipeline){
+        limelight.pipelineSwitch(pipeline);
+    }
+    public double getTx(){
+        return result.getTx();
+    }
+    public double getTy(){
+        return result.getTy();
+    }
+
 
 }
 
