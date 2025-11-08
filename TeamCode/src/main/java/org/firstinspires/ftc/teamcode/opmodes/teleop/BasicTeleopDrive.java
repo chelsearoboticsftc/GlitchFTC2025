@@ -5,6 +5,8 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
@@ -19,6 +21,7 @@ public class BasicTeleopDrive extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         Intake intake = new Intake(hardwareMap);
+        TouchSensor sensor = hardwareMap.get(TouchSensor.class, "sensor");
         Index index = new Index(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
         int indexclick = 0;
@@ -132,6 +135,7 @@ public class BasicTeleopDrive extends LinearOpMode {
             telemetry.addData("power", index.getpower());
             telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
+            telemetry.addData("sensor", sensor.getValue());
             }
         }
         }
