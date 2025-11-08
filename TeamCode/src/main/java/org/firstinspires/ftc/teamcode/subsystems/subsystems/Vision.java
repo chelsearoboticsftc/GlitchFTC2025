@@ -33,6 +33,9 @@ public class Vision{
         this.limelight = hardwareMap.get(Limelight3A.class, "limelight");
         this.limelight.setPollRateHz(100);
         this.imu = hardwareMap.get(IMU.class, "imu");
+        this.limelight.start();
+
+
 
         //you have to call SampleLimelight limelight; Then limelight.start() in your OpMode
     }
@@ -49,6 +52,7 @@ public class Vision{
             if (botpose != null) {
                 x = botpose.getPosition().x;
                 y = botpose.getPosition().y;
+
             }
         }
         return new Pose2d(x, y, heading);
@@ -56,12 +60,7 @@ public class Vision{
     public void setPipeLine(int pipeline){
         limelight.pipelineSwitch(pipeline);
     }
-    public double getTx(){
-        return result.getTx();
-    }
-    public double getTy(){
-        return result.getTy();
-    }
+
 
 
 }

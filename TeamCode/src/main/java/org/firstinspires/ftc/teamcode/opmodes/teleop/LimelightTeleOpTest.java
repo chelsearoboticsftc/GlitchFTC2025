@@ -28,9 +28,12 @@ public class LimelightTeleOpTest extends LinearOpMode {
             Pose2d botpose = limelight.getRobotPos();
             if(limelight.getresult() != null){
                 if(limelight.getresult().isValid()){
+
                     telemetry.addData("Pose2d that the limelight gives", botpose.toString());
-                    telemetry.addData("tx",limelight.getTx());
-                    telemetry.addData("ty", limelight.getTy());
+                    telemetry.addData("tx",limelight.getresult().getTx());
+                    telemetry.addData("ty", limelight.getresult().getTy());
+                    telemetry.addData("pos",botpose.position);
+                    telemetry.addData("heading",botpose.heading);
                     telemetry.update();
                 }
             }
