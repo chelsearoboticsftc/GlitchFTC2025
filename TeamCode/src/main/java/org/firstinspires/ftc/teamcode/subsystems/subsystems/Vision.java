@@ -46,16 +46,19 @@ public class Vision{
         //for now just setting to zero if you can't see the apriltag.
         double x = 0;
         double y = 0;
-        double heading = imu.getRobotYawPitchRollAngles().getYaw();
+        result = limelight.getLatestResult();
+        double robotYaw = imu.getRobotYawPitchRollAngles().getYaw();
+        limelight.updateRobotOrientation(robotYaw);
         if (result != null && result.isValid()) {
-            Pose3D botpose = result.getBotpose();
-            if (botpose != null) {
-                x = botpose.getPosition().x;
-                y = botpose.getPosition().y;
+            Pose3D botpose_mt2 = result.getBotpose_MT2();
+            if (botpose_mt2 != null) {
+                x = botpose_mt2.getPosition().x;
+                y = botpose_mt2.getPosition().y;
 
             }
         }
-        return new Pose2d(x, y, heading);
+
+        return new Pose2d(x,y,robotYaw);
     }
     public void setPipeLine(int pipeline){
         limelight.pipelineSwitch(pipeline);
