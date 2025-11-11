@@ -14,12 +14,12 @@ public class Shooter {
     public Shooter(HardwareMap hardwareMap) {
         this.shooter_Reloader = hardwareMap.get(Servo.class, "shooter_Reloader");
         this.motor = hardwareMap.get(DcMotorEx.class, "shooter");
-        this.motor2 = hardwareMap.get(DcMotorEx.class, "shooter2");
+
         motor.setZeroPowerBehavior(ShooterConstants.ZERO_POWER_BEHAVIOR);
-        motor2.setZeroPowerBehavior(ShooterConstants.ZERO_POWER_BEHAVIOR);
+
 
         //This defines the motor direction (forward or reversed)
-        motor2.setDirection(ShooterConstants.MOTOR_DIRECTION);
+
         //This defines the motor direction (forward or reversed)
         motor.setDirection(ShooterConstants.MOTOR_DIRECTION);
 
@@ -31,19 +31,14 @@ public class Shooter {
                 ShooterConstants.VELOCITY_I, //Integral Gain
                 ShooterConstants.VELOCITY_D, //Derivative Gain
                 ShooterConstants.VELOCITY_F);//Feed Forward Gain
-        motor2.setVelocityPIDFCoefficients(
-                ShooterConstants.VELOCITY_P, //Proportional Gain
-                ShooterConstants.VELOCITY_I, //Integral Gain
-                ShooterConstants.VELOCITY_D, //Derivative Gain
-                ShooterConstants.VELOCITY_F);//Feed Forward Gain
+
 
         /* This defines the motor position PID P gain. Position control only needs P gain since   *
          * once the system reaches the target position since once at position you're only         *
          * disturbances in the system                                                             */
         motor.setPositionPIDFCoefficients(
                 ShooterConstants.POSITION_P);//Proportional Gain
-        motor2.setPositionPIDFCoefficients(
-                ShooterConstants.POSITION_P);//Proportional Gain
+
 
 
 
@@ -80,11 +75,11 @@ public class Shooter {
     public void setMotorVelocity(double angularRate) {
 
         this.motor.setVelocity(angularRate);
-        this.motor2.setVelocity(angularRate);
+
     }
     public void fullpower(int velocity){
         this.motor.setVelocity(velocity);
-        this.motor2.setVelocity(velocity);
+
 
     }
 }

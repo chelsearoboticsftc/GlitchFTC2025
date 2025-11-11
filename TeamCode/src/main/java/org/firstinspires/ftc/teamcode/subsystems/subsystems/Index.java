@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -25,7 +26,7 @@ import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 
 public class Index {
     ColorSensor pos1, pos2, pos3;
-    CRServo flapper;
+    Servo flapper;
     DcMotorEx index;
     PIDCoefficients pidvalues;
     public PredominantColorProcessor.Result result;
@@ -58,7 +59,7 @@ public class Index {
                 .build();
         this.pos1 = hardwareMap.get(ColorSensor.class, "color1");
         this.index = hardwareMap.get(DcMotorEx.class, "index");
-        this.flapper = hardwareMap.get(CRServo.class, "flapper");
+        this.flapper = hardwareMap.get(Servo.class, "flapper");
         //pidvalues.p = 1.4;
        // pidvalues.i = 0.1;
         index.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -85,7 +86,7 @@ public class Index {
 
     }
     public void feed(){
-        flapper.setPower(1);
+        flapper.setPosition(1);
 
 
 
@@ -104,7 +105,7 @@ public class Index {
     }
     public void stop() {
         //index.getController().setServoPosition(1, 0.000001);
-        flapper.setPower(0);
+        flapper.setPosition(0);
     }
     public double getpower() {
         //index.getController().setServoPosition(1, 0.000001);
@@ -119,6 +120,11 @@ public class Index {
     }
     public void resetencoder(){
         index.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    public void power(double power){
+        index.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        index.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        index.setPower(power);
     }
 
 
