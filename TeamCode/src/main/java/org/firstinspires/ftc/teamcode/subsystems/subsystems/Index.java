@@ -57,13 +57,14 @@ public class Index {
                 .setCameraResolution(new Size(320, 240))
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
-        this.pos1 = hardwareMap.get(ColorSensor.class, "color1");
+
         this.index = hardwareMap.get(DcMotorEx.class, "index");
         this.flapper = hardwareMap.get(Servo.class, "flapper");
         //pidvalues.p = 1.4;
        // pidvalues.i = 0.1;
         index.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        index.setPositionPIDFCoefficients(3.5);
+
+        index.setPositionPIDFCoefficients(40);
         //index.setVelocityPIDFCoefficients(2,1,5,2);
 
         //this.pos2 = hardwareMap.get(ColorSensor.class, "pos2color");

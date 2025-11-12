@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -19,6 +20,7 @@ public class blue_close_Auton extends LinearOpMode {
         Index index = new Index(hardwareMap);
         // Wait for the driver to press start
         waitForStart();
+        index.rotate(0);
         shooter.fullpower(2250);
 
         Thread.sleep((2000));
@@ -32,7 +34,7 @@ public class blue_close_Auton extends LinearOpMode {
 
 
 
-                        .lineToX(60)
+                        .lineToX(-80)
 
                         .build()
         );
@@ -46,12 +48,13 @@ public class blue_close_Auton extends LinearOpMode {
             index.stop();
 
         }
+
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
-                        .turn(-20* Math.PI/180)
-                        .lineToX(40)
+                        .turn(Math.toRadians(-100))
+
 
                         .build()
         );

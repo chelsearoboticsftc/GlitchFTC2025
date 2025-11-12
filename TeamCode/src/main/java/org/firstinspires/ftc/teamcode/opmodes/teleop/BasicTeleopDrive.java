@@ -25,8 +25,8 @@ public class BasicTeleopDrive extends LinearOpMode {
         Index index = new Index(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
         int indexclick = 0;
-        double speed = 0.5;
-        int velocity = 3000;
+        double speed;
+        int velocity = 2220;
         boolean firing = false;
         double load_elapsed;
         double load_start=0;
@@ -60,6 +60,7 @@ public class BasicTeleopDrive extends LinearOpMode {
                 indexclick=0;
             }
             if (gamepad2.b) {
+                    index.rotate(0);
                     index.feed();
 
 
@@ -85,7 +86,7 @@ public class BasicTeleopDrive extends LinearOpMode {
             if (gamepad2.rightBumperWasPressed()){
                 velocity+= 100;
             }
-
+            index.holdpos();
 
 
 
@@ -124,9 +125,9 @@ public class BasicTeleopDrive extends LinearOpMode {
             }
 
 
-            double left_y = gamepad1.left_stick_y *speed;
-            double right_x= -gamepad1.right_stick_x*speed;
-            double left_x = -gamepad1.left_stick_x*speed;
+            double left_y = -gamepad1.left_stick_y *0.5;
+            double right_x= gamepad1.right_stick_x*0.5;
+            double left_x = -gamepad1.left_stick_x*0.5;
             drive.setDrivePowers(
                 new PoseVelocity2d(
                         new Vector2d(left_y,
@@ -135,7 +136,7 @@ public class BasicTeleopDrive extends LinearOpMode {
             telemetry.addData("power", index.getpower());
             telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
-
+            telemetry.addData("velocity", shooter.getvelocity());
             }
         }
         }

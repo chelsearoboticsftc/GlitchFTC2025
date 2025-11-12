@@ -82,5 +82,8 @@ public class Shooter {
 
 
     }
+    public double getvelocity(){
+        return this.motor.getVelocity();
+    }
 }
 
