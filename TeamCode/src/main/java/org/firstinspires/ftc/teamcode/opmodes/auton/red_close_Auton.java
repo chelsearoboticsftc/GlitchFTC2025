@@ -22,7 +22,7 @@ public class red_close_Auton extends LinearOpMode {
         index.rotate(0);
         shooter.fullpower(2250);
 
-        Thread.sleep((2000));
+        Thread.sleep((3000));
 
         if (isStopRequested()) return;
 
@@ -42,6 +42,7 @@ public class red_close_Auton extends LinearOpMode {
             shooter.load();
             Thread.sleep(500);
             shooter.unload();
+            Thread.sleep(500);
             index.feed();
             Thread.sleep(1000);
             index.stop();
@@ -52,7 +53,8 @@ public class red_close_Auton extends LinearOpMode {
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
-                        .turn(Math.toRadians(100))
+                        .turn(Math.toRadians(20))
+                        .lineToX(-30)
 
 
                         .build()
