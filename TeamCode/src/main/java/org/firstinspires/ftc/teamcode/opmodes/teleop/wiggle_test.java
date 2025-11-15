@@ -16,20 +16,25 @@ public class wiggle_test extends LinearOpMode {
         sensor.setMode(DigitalChannel.Mode.INPUT);
         waitForStart();
 
-            while (sensor.getState()){
-               index.power(0.2);
+            index.holdpos();
+
+            while (sensor.getState()) {
+                index.power(0.2);
             }
-            while(!sensor.getState()){
+            while (!sensor.getState()) {
                 index.power(0.2);
             }
             index.stop();
-        while (sensor.getState()){
-            index.power(-0.2);
+            while (sensor.getState()) {
+                index.power(-0.2);
+            }
+
+
+            index.resetencoder();
+            index.rotate(100);
+
+
         }
-        index.resetencoder();
-        index.rotate(100);
-
-
     }
-}
+
 
