@@ -20,7 +20,7 @@ public class blue_close_Auton extends LinearOpMode {
         Index index = new Index(hardwareMap);
         // Wait for the driver to press start
         waitForStart();
-        index.rotate(0);
+
         shooter.fullpower(2250);
 
         Thread.sleep((3000));
