@@ -18,7 +18,7 @@ public class blue_far_Auton extends LinearOpMode {
         Index index = new Index(hardwareMap);
         // Wait for the driver to press start
         waitForStart();
-        shooter.fullpower(2050);
+        shooter.fullpower(2200);
         Thread.sleep((3000));
         index.holdpos();
 
@@ -32,7 +32,7 @@ public class blue_far_Auton extends LinearOpMode {
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
                         .lineToX(3)
-                        .turn(6* Math.PI/180)
+                        .turn(5* Math.PI/180)
 
                         .build()
         );

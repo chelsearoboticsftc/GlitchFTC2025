@@ -56,12 +56,13 @@ public class BasicTeleopDrive extends LinearOpMode {
             }
             if (gamepad2.x) {
 
-                intake.in();
+                intake.out();
                 indexclick=0;
             }
             if (gamepad2.b) {
 
                     index.feed();
+
 
 
                     load_start = getRuntime();
@@ -86,7 +87,7 @@ public class BasicTeleopDrive extends LinearOpMode {
             if (gamepad2.rightBumperWasPressed()){
                 velocity+= 100;
             }
-            
+
 
 
 
@@ -123,11 +124,12 @@ public class BasicTeleopDrive extends LinearOpMode {
 
                 shooter.unload();
             }
+            index.holdpos();
+            index.rotate(0);
 
-
-            double left_y = -gamepad1.left_stick_y *0.5;
-            double right_x= -gamepad1.right_stick_x*0.5;
-            double left_x = -gamepad1.left_stick_x*0.5;
+            double left_y = -gamepad1.left_stick_y *0.75;
+            double right_x= -gamepad1.right_stick_x*0.75;
+            double left_x = -gamepad1.left_stick_x*0.75;
             drive.setDrivePowers(
                 new PoseVelocity2d(
                         new Vector2d(left_y,
