@@ -109,7 +109,7 @@ public class Index {
         //index.getController().setServoPosition(1, 0.000001);
         flapper.setPosition(0);
     }
-    public double getpower() {
+    public double getpos() {
         //index.getController().setServoPosition(1, 0.000001);
         return index.getCurrentPosition();
     }

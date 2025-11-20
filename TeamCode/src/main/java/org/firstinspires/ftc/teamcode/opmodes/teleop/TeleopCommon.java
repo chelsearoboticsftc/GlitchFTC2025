@@ -30,7 +30,7 @@ public class TeleopCommon extends LinearOpMode {
                             new Vector2d(-gamepad1.left_stick_y,
                                     -gamepad1.left_stick_x),
                             -gamepad1.right_stick_x));
-            telemetry.addData("power", index.getpower());
+            telemetry.addData("power", index.getpos());
             telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
 

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,7 +12,6 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
-
 @TeleOp
 public class BasicTeleopDriveTest extends LinearOpMode {
     @Override
@@ -92,6 +92,7 @@ public class BasicTeleopDriveTest extends LinearOpMode {
 
 
 
+
             if (index.read() == PredominantColorProcessor.Swatch.WHITE){
                 index.rotate(0);
 
@@ -128,7 +129,7 @@ public class BasicTeleopDriveTest extends LinearOpMode {
                         new Vector2d(left_y,
                                 left_x),
                         right_x));
-            telemetry.addData("power", index.getpower());
+            telemetry.addData("power", index.getpos());
             telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
             }

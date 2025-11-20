@@ -43,10 +43,6 @@ public class BasicTeleopDrive extends LinearOpMode {
 
         while (opModeIsActive()) {
             shooter.fullpower(velocity);
-
-
-
-
             telemetry.update();
             if(gamepad1.leftBumperWasPressed()){
                 speed = 1.0;
@@ -56,30 +52,24 @@ public class BasicTeleopDrive extends LinearOpMode {
             }
             if (gamepad2.x) {
 
-                intake.out();
+                intake.in();
+                index.power(0.3);
                 indexclick=0;
+
             }
             if (gamepad2.b) {
 
                     index.feed();
-
-
-
                     load_start = getRuntime();
-
-
-
-
-
             }
-            if (!gamepad2.b && !gamepad2.x){
+            if (gamepad2.xWasReleased()){
                 intake.stop();
+                index.power(0);
+                double pos_needed = (355-(index.getpos() % 355));
+                int final_pos_needed = (int) (index.getpos()+pos_needed);
+                //index get pos
+                index.rotate(final_pos_needed);
             }
-
-
-
-
-
 
             if(gamepad2.leftBumperWasPressed()){
                 velocity-= 100;
@@ -88,20 +78,8 @@ public class BasicTeleopDrive extends LinearOpMode {
                 velocity+= 100;
             }
 
-
-
-
-
-
-
-
-
-
-
             if (index.read() == PredominantColorProcessor.Swatch.WHITE){
                 index.rotate(0);
-
-
             }
 
             index_feed_elapsed = getRuntime()-index_feed_start;
@@ -124,8 +102,10 @@ public class BasicTeleopDrive extends LinearOpMode {
 
                 shooter.unload();
             }
-            index.holdpos();
-            index.rotate(0);
+            if(gamepad2.aWasPressed()){
+                index.rotate((int)(index.getpos()+355));
+            }
+
 
             double left_y = -gamepad1.left_stick_y *0.75;
             double right_x= -gamepad1.right_stick_x*0.75;
@@ -135,7 +115,7 @@ public class BasicTeleopDrive extends LinearOpMode {
                         new Vector2d(left_y,
                                 left_x),
                         right_x));
-            telemetry.addData("power", index.getpower());
+            telemetry.addData("pos", index.getpos());
             telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
             telemetry.addData("velocity", shooter.getvelocity());
