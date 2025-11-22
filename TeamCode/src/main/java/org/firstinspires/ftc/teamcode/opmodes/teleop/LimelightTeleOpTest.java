@@ -14,7 +14,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
-@Disabled
 @TeleOp
 
 public class LimelightTeleOpTest extends LinearOpMode {
@@ -44,11 +43,20 @@ public class LimelightTeleOpTest extends LinearOpMode {
 
             }
             if(gamepad1.aWasPressed()){
-                while(Math.abs(limelight.getresult().getTx())> 0.1){
+                double start_time = getRuntime();
+                double time_now=getRuntime();
+                telemetry.addLine("running");
+                telemetry.update();
+                while(Math.abs(limelight.getresult().getTx())> 1 && time_now-start_time < 2){
+
+                    telemetry.addLine("rotating");
+                    telemetry.update();
                     drive.setDrivePowers( new PoseVelocity2d(
                             new Vector2d(0,
                                     0),
-                            0.1* limelight.getresult().getTx()));
+                            -0.0175* (limelight.getresult().getTx()-1)));
+                    time_now = getRuntime();
+
                 }
                 drive.setDrivePowers( new PoseVelocity2d(
                         new Vector2d(0,

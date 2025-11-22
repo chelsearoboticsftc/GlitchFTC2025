@@ -5,12 +5,14 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 
 import kotlin.Unit;
@@ -19,8 +21,15 @@ import kotlin.Unit;
 public class BasicTeleopDrive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
+        Vision limelight = new Vision(hardwareMap);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         Intake intake = new Intake(hardwareMap);
+        DigitalChannel sensor = hardwareMap.get(DigitalChannel.class, "sensor");
+        DigitalChannel green = hardwareMap.get(DigitalChannel.class, "green");
+        DigitalChannel red = hardwareMap.get(DigitalChannel.class, "red");
+        sensor.setMode(DigitalChannel.Mode.INPUT);
+        red.setMode(DigitalChannel.Mode.OUTPUT);
+        green.setMode(DigitalChannel.Mode.OUTPUT);
 
         Index index = new Index(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
@@ -42,6 +51,38 @@ public class BasicTeleopDrive extends LinearOpMode {
 
 
         while (opModeIsActive()) {
+            green.setState(true);
+            if(gamepad1.dpad_down){
+                while (sensor.getState()) {
+                    index.power(0.1);
+                }
+                index.stop();
+                telemetry.addLine("done step1");
+                telemetry.update();
+
+                while (!sensor.getState()) {
+                    index.power(0.1);
+                }
+                telemetry.addLine("done step2");
+                telemetry.update();
+
+                index.stop();
+                while (sensor.getState()) {
+                    index.power(-0.1);
+                }telemetry.addLine("done step3");
+                telemetry.update();
+                index.stop();
+
+
+
+                index.resetencoder();
+
+                index.rotate(20);
+                while (index.motorbusy()){
+
+                }
+                index.resetencoder();
+            }
             shooter.fullpower(velocity);
             telemetry.update();
             if(gamepad1.leftBumperWasPressed()){
@@ -53,9 +94,36 @@ public class BasicTeleopDrive extends LinearOpMode {
             if (gamepad2.x) {
 
                 intake.in();
-                index.power(0.3);
+                index.power(0.5);
                 indexclick=0;
 
+            }
+            if(gamepad1.rightBumperWasPressed()){
+                double start_time = getRuntime();
+                double time_now=getRuntime();
+                telemetry.addLine("running");
+                telemetry.update();
+                while(Math.abs(limelight.getresult().getTx())> 1 && time_now-start_time < 2){
+
+                    telemetry.addLine("rotating");
+                    telemetry.update();
+                    drive.setDrivePowers( new PoseVelocity2d(
+                            new Vector2d(0,
+                                    0),
+                            -0.0175* (limelight.getresult().getTx()-1)));
+                    time_now = getRuntime();
+
+                }
+                drive.setDrivePowers( new PoseVelocity2d(
+                        new Vector2d(0,
+                                0),
+                        0));
+            }
+            if(gamepad2.y){
+                intake.out();
+            }
+            if(gamepad2.yWasReleased()){
+                intake.stop();
             }
             if (gamepad2.b) {
 
@@ -69,6 +137,7 @@ public class BasicTeleopDrive extends LinearOpMode {
                 int final_pos_needed = (int) (index.getpos()+pos_needed);
                 //index get pos
                 index.rotate(final_pos_needed);
+
             }
 
             if(gamepad2.leftBumperWasPressed()){
@@ -103,7 +172,45 @@ public class BasicTeleopDrive extends LinearOpMode {
                 shooter.unload();
             }
             if(gamepad2.aWasPressed()){
-                index.rotate((int)(index.getpos()+355));
+
+                while (sensor.getState()) {
+                    index.power(0.3);
+                }
+                index.stop();
+                telemetry.addLine("done step1");
+                telemetry.update();
+
+                while (!sensor.getState()){
+                    index.power(0.3);
+
+                }
+                double current_time = getRuntime();
+                double start_time = getRuntime();
+                while (current_time-start_time <0.3){
+                    current_time = getRuntime();
+                    index.power(0.4);
+                }
+                telemetry.addLine("done step2");
+                telemetry.update();
+
+                index.stop();
+                while (sensor.getState()) {
+                    index.power(-0.3);
+                }telemetry.addLine("done step3");
+                telemetry.update();
+                index.stop();
+
+
+
+
+
+                index.rotate((int)(index.getpos()+50));
+                while (index.motorbusy()){
+
+                }
+
+
+
             }
 
 

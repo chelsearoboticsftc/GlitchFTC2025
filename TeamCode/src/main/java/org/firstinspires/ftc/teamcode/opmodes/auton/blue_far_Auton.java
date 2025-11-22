@@ -32,7 +32,7 @@ public class blue_far_Auton extends LinearOpMode {
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
                         .lineToX(3)
-                        .turn(5* Math.PI/180)
+                        .turn(4* Math.PI/180)
 
                         .build()
         );
