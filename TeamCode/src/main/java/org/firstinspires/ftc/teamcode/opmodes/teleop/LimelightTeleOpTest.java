@@ -44,34 +44,16 @@ public class LimelightTeleOpTest extends LinearOpMode {
 
             }
             if(gamepad1.aWasPressed()){
-                if (limelight.getresult().getTx() < -0.1){
-                    while(limelight.getresult().getTx() < -0.1){
-                        drive.setDrivePowers( new PoseVelocity2d(
-                                new Vector2d(0,
-                                        0),
-                                0.2));
-                    }
+                while(Math.abs(limelight.getresult().getTx())> 0.1){
                     drive.setDrivePowers( new PoseVelocity2d(
                             new Vector2d(0,
                                     0),
-                            0));
-
-
+                            0.1* limelight.getresult().getTx()));
                 }
-                else if (limelight.getresult().getTx() > 0.1){
-                    while(limelight.getresult().getTx() > 0.1){
-                        drive.setDrivePowers( new PoseVelocity2d(
-                                new Vector2d(0,
-                                        0),
-                                -0.2));
-                    }
-                    drive.setDrivePowers( new PoseVelocity2d(
-                            new Vector2d(0,
-                                    0),
-                            0));
-
-
-                }
+                drive.setDrivePowers( new PoseVelocity2d(
+                        new Vector2d(0,
+                                0),
+                        0));
                 }
             }
 
