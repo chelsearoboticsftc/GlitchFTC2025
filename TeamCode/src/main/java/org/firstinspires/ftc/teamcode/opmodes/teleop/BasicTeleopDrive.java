@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.acmerobotics.roadrunner.AngularVelConstraint;
+import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -14,6 +19,8 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
 import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
+
+import java.util.Arrays;
 
 import kotlin.Unit;
 
@@ -45,6 +52,11 @@ public class BasicTeleopDrive extends LinearOpMode {
         double index_relapsed;
         double index_feed_start=0;
         double index_feed_elapsed;
+        int i = 0;
+        VelConstraint baseVelConstraints = new MinVelConstraint(Arrays.asList(
+                new TranslationalVelConstraint(10.0),
+                new AngularVelConstraint(Math.PI/3)
+        ));
 
         waitForStart();
         shooter.fullpower(3000);
@@ -83,7 +95,7 @@ public class BasicTeleopDrive extends LinearOpMode {
                 }
                 index.resetencoder();
             }
-            shooter.fullpower(velocity);
+            //shooter.fullpower(velocity);
             telemetry.update();
             if(gamepad1.leftBumperWasPressed()){
                 speed = 1.0;
@@ -99,26 +111,21 @@ public class BasicTeleopDrive extends LinearOpMode {
 
             }
             if(gamepad1.rightBumperWasPressed()){
-                double start_time = getRuntime();
-                double time_now=getRuntime();
-                telemetry.addLine("running");
-                telemetry.update();
-                while(Math.abs(limelight.getresult().getTx())> 1 && time_now-start_time < 2){
+                shooter.shoot_vel(limelight.getresult().getBotposeAvgDist());
+                while (i<8){
+                    Actions.runBlocking(
+                        drive.actionBuilder(new Pose2d(0, 0, 0))
 
-                    telemetry.addLine("rotating");
-                    telemetry.update();
-                    drive.setDrivePowers( new PoseVelocity2d(
-                            new Vector2d(0,
-                                    0),
-                            -0.0175* (limelight.getresult().getTx()-1)));
-                    time_now = getRuntime();
 
+
+                                .turn((limelight.getresult().getTx()*-0.1)* Math.PI/180)
+
+                                .build()
+                );
+                i+=1;
                 }
-                drive.setDrivePowers( new PoseVelocity2d(
-                        new Vector2d(0,
-                                0),
-                        0));
             }
+            i = 0;
             if(gamepad2.y){
                 intake.out();
             }
@@ -141,10 +148,10 @@ public class BasicTeleopDrive extends LinearOpMode {
             }
 
             if(gamepad2.leftBumperWasPressed()){
-                velocity-= 100;
+                velocity-= 20;
             }
             if (gamepad2.rightBumperWasPressed()){
-                velocity+= 100;
+                velocity+= 20;
             }
 
             if (index.read() == PredominantColorProcessor.Swatch.WHITE){
@@ -226,6 +233,9 @@ public class BasicTeleopDrive extends LinearOpMode {
             telemetry.addData("color", index.read());
             telemetry.addData("pos", shooter.whereservo());
             telemetry.addData("velocity", shooter.getvelocity());
+            telemetry.addData("tx", limelight.getresult().getTx());
+            telemetry.addData("distance", limelight.getresult().getBotposeAvgDist());
+            telemetry.addData("velocity_command", velocity);
             }
         }
         }

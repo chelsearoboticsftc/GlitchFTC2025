@@ -1,13 +1,24 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
+import com.acmerobotics.roadrunner.AccelConstraint;
+import com.acmerobotics.roadrunner.AngularVelConstraint;
+import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
+
+import java.util.Arrays;
 
 @Autonomous
 public class red_close_Auton extends LinearOpMode {
@@ -17,12 +28,23 @@ public class red_close_Auton extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         Shooter shooter = new Shooter(hardwareMap);
         Index index = new Index(hardwareMap);
+        Intake intake = new Intake(hardwareMap);
+        Vision limelight = new Vision(hardwareMap);
+
+        int t = 0;
+
+
+
         // Wait for the driver to press start
         waitForStart();
+        VelConstraint baseVelConstraints = new MinVelConstraint(Arrays.asList(
+                new TranslationalVelConstraint(50.0),
+                new AngularVelConstraint(Math.PI/5)
+        ));
 
-        shooter.fullpower(2000);
+        shooter.fullpower(2020);
 
-        Thread.sleep((3000));
+        Thread.sleep((1000));
 
         if (isStopRequested()) return;
 
@@ -33,32 +55,104 @@ public class red_close_Auton extends LinearOpMode {
 
 
 
-                        .lineToX(-80)
+                        .lineToX(-94)
+
 
                         .build()
         );
-        for (int i = 0; i < 4; i++) {
+
+
+        while (t<8){
+            Actions.runBlocking(
+                    drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+
+                            .turn((limelight.getresult().getTx()*-0.1)* Math.PI/180)
+
+                            .build()
+            );
+            t+=1;
+        }
+
+
+    t = 0;
+        Thread.sleep(1000);
+        for (int i = 0; i < 3; i++) {
 
             shooter.load();
             Thread.sleep(500);
             shooter.unload();
-            Thread.sleep(500);
+
             index.feed();
             Thread.sleep(1000);
             index.stop();
+            Thread.sleep(2000);
 
         }
+        intake.in();
+        index.power(0.5);
 
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
-                        .turn(Math.toRadians(20))
+                        .turn(Math.toRadians(70))
+
+
+
+
+                        .build()
+        );
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+
+
                         .lineToX(-30)
 
 
                         .build()
         );
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0,0,0))
+                        .lineToX(30)
+                        .turn(Math.toRadians(-70))
+                        .build()
+
+        );
+        intake.stop();
+        index.power(0);
+        double pos_needed = (355-(index.getpos() % 355));
+        int final_pos_needed = (int) (index.getpos()+pos_needed);
+        //index get pos
+        index.rotate(final_pos_needed);
+
+        while (t<8){
+            Actions.runBlocking(
+                    drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+
+                            .turn((limelight.getresult().getTx()*-0.1)* Math.PI/180)
+
+                            .build()
+            );
+            t+=1;
+        }
+        t =0;
+        shooter.load();
+        Thread.sleep(500);
+        shooter.unload();
+
+        index.feed();
+        Thread.sleep(1000);
+        index.stop();
+        Thread.sleep(2000);
+
+
+
 
     }
 }

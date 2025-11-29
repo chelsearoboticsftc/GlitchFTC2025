@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.subsystems.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
 
 import org.firstinspires.ftc.teamcode.utils.LookupTable;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.ShooterConstants;
 
 public class Shooter {
 
@@ -14,6 +16,7 @@ public class Shooter {
     public Shooter(HardwareMap hardwareMap) {
         this.shooter_Reloader = hardwareMap.get(Servo.class, "shooter_Reloader");
         this.motor = hardwareMap.get(DcMotorEx.class, "shooter");
+
 
         motor.setZeroPowerBehavior(ShooterConstants.ZERO_POWER_BEHAVIOR);
 
@@ -84,6 +87,11 @@ public class Shooter {
     }
     public double getvelocity(){
         return this.motor.getVelocity();
+    }
+
+    public void shoot_vel(double distance){
+        this.motor.setVelocity(distanceToVelocity.interpolate(distance));
+
     }
 }
 

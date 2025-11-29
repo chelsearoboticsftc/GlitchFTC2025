@@ -1,8 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.acmerobotics.roadrunner.AngularVelConstraint;
+import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
@@ -14,6 +20,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 @TeleOp
 
 public class LimelightTeleOpTest extends LinearOpMode {
@@ -23,7 +33,10 @@ public class LimelightTeleOpTest extends LinearOpMode {
         Vision limelight = new Vision(hardwareMap);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-
+        VelConstraint baseVelConstraints = new MinVelConstraint(Arrays.asList(
+                new TranslationalVelConstraint(10.0),
+                new AngularVelConstraint(Math.PI/3)
+        ));
         waitForStart();
 
         while(opModeIsActive()){
@@ -42,20 +55,39 @@ public class LimelightTeleOpTest extends LinearOpMode {
                 }
 
             }
+            if(gamepad1.xWasPressed()){
+
+                Actions.runBlocking(
+                        drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+
+                                .turn((limelight.getresult().getTx()*-0.2)* Math.PI/180)
+
+                                .build()
+                );
+            }
             if(gamepad1.aWasPressed()){
                 double start_time = getRuntime();
                 double time_now=getRuntime();
                 telemetry.addLine("running");
                 telemetry.update();
-                while(Math.abs(limelight.getresult().getTx())> 1 && time_now-start_time < 2){
+                while(Math.abs(limelight.getresult().getTx())> 1 && time_now-start_time < 3){
 
-                    telemetry.addLine("rotating");
-                    telemetry.update();
-                    drive.setDrivePowers( new PoseVelocity2d(
-                            new Vector2d(0,
-                                    0),
-                            -0.0175* (limelight.getresult().getTx()-1)));
-                    time_now = getRuntime();
+                    if(Math.abs(limelight.getresult().getTx())>3){
+                        drive.setDrivePowers( new PoseVelocity2d(
+                                new Vector2d(0,
+                                        0),
+                                -0.0175* (limelight.getresult().getTx()-1)));
+                        time_now = getRuntime();
+                    }
+                    else{
+                        drive.setDrivePowers( new PoseVelocity2d(
+                                new Vector2d(0,
+                                        0),
+                                -0.15* (limelight.getresult().getTx()-1)));
+                        time_now = getRuntime();
+                    }
 
                 }
                 drive.setDrivePowers( new PoseVelocity2d(
