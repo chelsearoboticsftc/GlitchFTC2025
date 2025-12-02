@@ -33,10 +33,7 @@ public class LimelightTeleOpTest extends LinearOpMode {
         Vision limelight = new Vision(hardwareMap);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-        VelConstraint baseVelConstraints = new MinVelConstraint(Arrays.asList(
-                new TranslationalVelConstraint(10.0),
-                new AngularVelConstraint(Math.PI/3)
-        ));
+
         waitForStart();
 
         while(opModeIsActive()){
@@ -62,7 +59,7 @@ public class LimelightTeleOpTest extends LinearOpMode {
 
 
 
-                                .turn((limelight.getresult().getTx()*-0.2)* Math.PI/180)
+                                .turn((limelight.getresult().getTx()*-1.9)* Math.PI/180)
 
                                 .build()
                 );
