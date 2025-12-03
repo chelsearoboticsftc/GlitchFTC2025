@@ -26,14 +26,18 @@ public class TEST extends LinearOpMode {
 
 
         if (isStopRequested()) return;
-
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
+                        .lineToX(-60)
+                        .build()
+        );
         // Road Runner uses inches, so we convert 10 feet to 120 inches.
         // We create an "action" to drive forward (along the X-axis) by 120 inches.
         Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(0, 0, 0))
+                drive.actionBuilder(new Pose2d(-60,0,0))
 
 
-                        .lineToX(64)
+                        .turn(Math.toRadians(90))
 
 
                         .build()

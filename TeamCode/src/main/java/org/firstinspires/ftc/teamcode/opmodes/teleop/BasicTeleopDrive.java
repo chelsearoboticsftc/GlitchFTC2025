@@ -113,15 +113,17 @@ public class BasicTeleopDrive extends LinearOpMode {
             if(gamepad1.rightBumperWasPressed()){
                 shooter.shoot_vel(limelight.getresult().getBotposeAvgDist());
 
+                for (int c = 0; c < 2; c++) {
+
                     Actions.runBlocking(
-                        drive.actionBuilder(new Pose2d(0, 0, 0))
+                            drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
+                                    .turn(Math.toRadians(-limelight.getresult().getTx()))
 
-                                .turn((limelight.getresult().getTx()*-1.5)* Math.PI/180)
-
-                                .build()
-                );
+                                    .build()
+                    );
+                }
 
 
             }

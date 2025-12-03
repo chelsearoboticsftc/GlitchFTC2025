@@ -30,21 +30,16 @@ public class red_close_Auton extends LinearOpMode {
         Index index = new Index(hardwareMap);
         Intake intake = new Intake(hardwareMap);
         Vision limelight = new Vision(hardwareMap);
-
+        double heading;
         int t = 0;
-
 
 
         // Wait for the driver to press start
         waitForStart();
-        VelConstraint baseVelConstraints = new MinVelConstraint(Arrays.asList(
-                new TranslationalVelConstraint(50.0),
-                new AngularVelConstraint(Math.PI/5)
-        ));
 
-        shooter.fullpower(2020);
 
-        Thread.sleep((1000));
+        shooter.fullpower(2200);
+
 
         if (isStopRequested()) return;
 
@@ -54,30 +49,32 @@ public class red_close_Auton extends LinearOpMode {
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
-
-                        .lineToX(-94)
+                        .lineToX(-45)
 
 
                         .build()
         );
+        drive.localizer.setPose(new Pose2d(0,0,0));
 
 
-        while (t<8){
-            Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(0, 0, 0))
+        telemetry.addData("tx", limelight.getresult().getTx());
+        telemetry.update();
 
 
-
-                            .turn((limelight.getresult().getTx()*-0.1)* Math.PI/180)
-
-                            .build()
-            );
-            t+=1;
-        }
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
-    t = 0;
+                        .turn(Math.toRadians(-limelight.getresult().getTx()))
+
+
+                        .build()
+        );
+        drive.localizer.setPose(new Pose2d(0,0,0));
+
+
         Thread.sleep(1000);
+
         for (int i = 0; i < 3; i++) {
 
             shooter.load();
@@ -85,74 +82,74 @@ public class red_close_Auton extends LinearOpMode {
             shooter.unload();
 
             index.feed();
-            Thread.sleep(1000);
+            Thread.sleep(500);
             index.stop();
-            Thread.sleep(2000);
+            Thread.sleep(700);
 
         }
         intake.in();
         index.power(0.5);
 
         Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(0, 0, 0))
+                drive.actionBuilder(new Pose2d(0, 0,0 ))
 
-
-                        .turn(Math.toRadians(70))
-
-
+                        .lineToX(-5)
+                        .turn(Math.toRadians(130))
 
 
                         .build()
         );
+        drive.localizer.setPose(new Pose2d(0,0,0));
+
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
+                        .lineToX(-40)
 
-
-
-                        .lineToX(-30)
 
 
                         .build()
         );
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(0,0,0))
-                        .lineToX(30)
-                        .turn(Math.toRadians(-70))
-                        .build()
-
-        );
-        intake.stop();
-        index.power(0);
-        double pos_needed = (355-(index.getpos() % 355));
-        int final_pos_needed = (int) (index.getpos()+pos_needed);
-        //index get pos
-        index.rotate(final_pos_needed);
-
-        while (t<8){
-            Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(0, 0, 0))
-
-
-
-                            .turn((limelight.getresult().getTx()*-0.1)* Math.PI/180)
-
-                            .build()
-            );
-            t+=1;
-        }
-        t =0;
-        shooter.load();
-        Thread.sleep(500);
-        shooter.unload();
-
-        index.feed();
-        Thread.sleep(1000);
-        index.stop();
-        Thread.sleep(2000);
-
-
-
-
-    }
-}
+        drive.localizer.setPose(new Pose2d(0,0,0));
+    }}
+//        Actions.runBlocking(
+//                drive.actionBuilder(new Pose2d(0,0,0))
+//                        .lineToX(30)
+//                        .turn(Math.toRadians(-70))
+//                        .build()
+//
+//        );
+//        intake.stop();
+//        index.power(0);
+//        double pos_needed = (355-(index.getpos() % 355));
+//        int final_pos_needed = (int) (index.getpos()+pos_needed);
+//        //index get pos
+//        index.rotate(final_pos_needed);
+//
+//        while (t<8){
+//            Actions.runBlocking(
+//                    drive.actionBuilder(new Pose2d(0, 0, 0))
+//
+//
+//
+//                            .turn((limelight.getresult().getTx()*-0.1)* Math.PI/180)
+//
+//                            .build()
+//            );
+//            t+=1;
+//        }
+//        t =0;
+//        shooter.load();
+//        Thread.sleep(500);
+//        shooter.unload();
+//
+//        index.feed();
+//        Thread.sleep(1000);
+//        index.stop();
+//        Thread.sleep(2000);
+//
+//
+//
+//
+//    }
+//}

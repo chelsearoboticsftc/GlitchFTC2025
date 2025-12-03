@@ -52,17 +52,19 @@ public class LimelightTeleOpTest extends LinearOpMode {
                 }
 
             }
-            if(gamepad1.xWasPressed()){
+            if(gamepad1.xWasPressed()) {
 
-                Actions.runBlocking(
-                        drive.actionBuilder(new Pose2d(0, 0, 0))
+                for (int i = 0; i < 2; i++) {
+
+                    Actions.runBlocking(
+                            drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
+                                    .turn(Math.toRadians(-limelight.getresult().getTx()))
 
-                                .turn((limelight.getresult().getTx()*-1.9)* Math.PI/180)
-
-                                .build()
-                );
+                                    .build()
+                    );
+                }
             }
             if(gamepad1.aWasPressed()){
                 double start_time = getRuntime();
