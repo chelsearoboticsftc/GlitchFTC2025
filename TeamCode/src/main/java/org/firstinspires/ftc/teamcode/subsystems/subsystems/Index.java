@@ -93,9 +93,10 @@ public class Index {
 
     }
     public int rotate(int pos){
+        index.setTargetPosition(pos);
         index.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //index.getController().setServoPosition(1, 0.000001);
-        index.setTargetPosition(pos);
+
 
 
 

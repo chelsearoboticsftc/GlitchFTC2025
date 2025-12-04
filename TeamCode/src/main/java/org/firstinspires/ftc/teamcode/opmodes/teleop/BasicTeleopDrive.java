@@ -53,6 +53,10 @@ public class BasicTeleopDrive extends LinearOpMode {
         double index_feed_start=0;
         double index_feed_elapsed;
         int i = 0;
+        double latest_tx;
+        int latest_vel;
+        int vel_count = 0;
+
         VelConstraint baseVelConstraints = new MinVelConstraint(Arrays.asList(
                 new TranslationalVelConstraint(10.0),
                 new AngularVelConstraint(Math.PI/3)
@@ -63,6 +67,7 @@ public class BasicTeleopDrive extends LinearOpMode {
 
 
         while (opModeIsActive()) {
+            drive.localizer.setPose(new Pose2d(0,0,0));
             green.setState(true);
             if(gamepad1.dpad_down){
                 while (sensor.getState()) {
@@ -110,20 +115,29 @@ public class BasicTeleopDrive extends LinearOpMode {
                 indexclick=0;
 
             }
+
             if(gamepad1.rightBumperWasPressed()){
-                shooter.shoot_vel(limelight.getresult().getBotposeAvgDist());
+                if (limelight.getresult().isValid()){
+                    shooter.shoot_vel(limelight.getresult().getBotposeAvgDist());
+                    drive.localizer.update();
+                    Pose2d pose = drive.localizer.getPose();
 
-                for (int c = 0; c < 2; c++) {
+                    for (int c = 0; c < 2; c++) {
 
-                    Actions.runBlocking(
-                            drive.actionBuilder(new Pose2d(0, 0, 0))
+                        Actions.runBlocking(
+                                drive.actionBuilder(pose)
 
 
-                                    .turn(Math.toRadians(-limelight.getresult().getTx()))
+                                        .turn(Math.toRadians(-limelight.getresult().getTx()))
 
-                                    .build()
-                    );
+                                        .build()
+                        );
+
+                    }
                 }
+
+
+
 
 
             }
@@ -151,9 +165,15 @@ public class BasicTeleopDrive extends LinearOpMode {
 
             if(gamepad2.leftBumperWasPressed()){
                 velocity-= 20;
+                vel_count-=1;
+                shooter.fullpower(2100+20*vel_count);
+
             }
             if (gamepad2.rightBumperWasPressed()){
                 velocity+= 20;
+                vel_count+=1;
+
+                shooter.fullpower(2100+20*vel_count);
             }
 
             if (index.read() == PredominantColorProcessor.Swatch.WHITE){

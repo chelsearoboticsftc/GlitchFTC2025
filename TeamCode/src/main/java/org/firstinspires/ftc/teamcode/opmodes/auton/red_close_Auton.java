@@ -11,6 +11,7 @@ import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
@@ -27,6 +28,7 @@ public class red_close_Auton extends LinearOpMode {
         // Initialize MecanumDrive. The starting pose is (0, 0) with a 0-degree heading.
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         Shooter shooter = new Shooter(hardwareMap);
+        DigitalChannel sensor = hardwareMap.get(DigitalChannel.class, "sensor");
         Index index = new Index(hardwareMap);
         Intake intake = new Intake(hardwareMap);
         Vision limelight = new Vision(hardwareMap);
@@ -104,21 +106,84 @@ public class red_close_Auton extends LinearOpMode {
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
-                        .lineToX(-40)
+                        .lineToX(-35)
 
 
 
                         .build()
         );
         drive.localizer.setPose(new Pose2d(0,0,0));
+        double pos_needed = (355-(index.getpos() % 355));
+        int final_pos_needed = (int) (index.getpos()+pos_needed);
+        //index get pos
+        index.rotate(final_pos_needed);
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0,0,0))
+                        .lineToX(35)
+                        .turn(Math.toRadians(-135))
+                        .build()
+
+        );
+        index.power(0);
+        intake.stop();
+        drive.localizer.setPose(new Pose2d(0,0,0));
+
+
+        telemetry.addData("tx", limelight.getresult().getTx());
+        telemetry.update();
+
+
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+                        .turn(Math.toRadians(-limelight.getresult().getTx()))
+
+
+                        .build()
+        );
+        drive.localizer.setPose(new Pose2d(0,0,0));
+
+
+
+
+
+
+            shooter.load();
+            Thread.sleep(500);
+            shooter.unload();
+
+            index.feed();
+            Thread.sleep(500);
+            index.stop();
+            Thread.sleep(700);
+
+
+        for (int i = 0; i < 3; i++) {
+
+
+            index.feed();
+            Thread.sleep(500);
+            index.stop();
+            Thread.sleep(700);
+            shooter.load();
+            Thread.sleep(500);
+            shooter.unload();
+
+
+
+
+
+
+
+            index.rotate((int)(index.getpos()+350));
+            while (index.motorbusy()){
+
+            }
+        }
+
+
     }}
-//        Actions.runBlocking(
-//                drive.actionBuilder(new Pose2d(0,0,0))
-//                        .lineToX(30)
-//                        .turn(Math.toRadians(-70))
-//                        .build()
-//
-//        );
 //        intake.stop();
 //        index.power(0);
 //        double pos_needed = (355-(index.getpos() % 355));

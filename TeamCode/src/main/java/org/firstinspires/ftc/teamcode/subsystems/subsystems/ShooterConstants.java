@@ -26,9 +26,9 @@ public class ShooterConstants {
         // - Distances should be in the same units used for measuring the distance between
         // the robot and the goal
         // - Velocities should be in encoder ticks per second
-        new Pair(1.5, 1810),
-        new Pair(2, 1910),
-        new Pair(2.5, 2010),
-        new Pair(3, 2110)
+        new Pair(1.5, 1790),
+        new Pair(2, 1890),
+        new Pair(2.5, 1990),
+        new Pair(3, 2090)
     );
 }

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Index;
 import org.firstinspires.ftc.teamcode.subsystems.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
 
 @Autonomous
 public class red_far_Auton extends LinearOpMode {
@@ -17,11 +18,12 @@ public class red_far_Auton extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         Shooter shooter = new Shooter(hardwareMap);
         Index index = new Index(hardwareMap);
+        Vision limelight = new Vision(hardwareMap);
         // Wait for the driver to press start
         waitForStart();
-        shooter.fullpower(2100);
+        shooter.fullpower(2300);
 
-        Thread.sleep((3000));
+
 
         if (isStopRequested()) return;
 
@@ -30,15 +32,30 @@ public class red_far_Auton extends LinearOpMode {
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
-                        .lineToX(3)
-                        .turn(-5* Math.PI/180)
+                        .lineToX(7)
+                        .turn(-18* Math.PI/180)
+
 
                         .build()
         );
+        drive.localizer.setPose(new Pose2d(0,0,0));
+        Thread.sleep(1000);
+
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+                        .turn(Math.toRadians(-limelight.getresult().getTx()))
+
+
+                        .build()
+        );
+        drive.localizer.setPose(new Pose2d(0,0,0));
+        Thread.sleep(3000);
         for (int i = 0; i < 4; i++) {
 
            // index.holdpos();
-            Thread.sleep(500);
+            Thread.sleep(2000);
             shooter.load();
             Thread.sleep(500);
             shooter.unload();
@@ -51,7 +68,7 @@ public class red_far_Auton extends LinearOpMode {
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
-                        .lineToX(40)
+                        .lineToX(20)
 
 
                         .build()
