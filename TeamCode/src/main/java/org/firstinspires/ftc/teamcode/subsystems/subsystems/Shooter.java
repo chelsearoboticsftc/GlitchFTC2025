@@ -89,8 +89,9 @@ public class Shooter {
         return this.motor.getVelocity();
     }
 
-    public void shoot_vel(double distance){
+    public double shoot_vel(double distance){
         this.motor.setVelocity(distanceToVelocity.interpolate(distance));
+        return distanceToVelocity.interpolate(distance);
 
     }
 }

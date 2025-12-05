@@ -42,7 +42,7 @@ public class BasicTeleopDrive extends LinearOpMode {
         Shooter shooter = new Shooter(hardwareMap);
         int indexclick = 0;
         double speed;
-        int velocity = 2220;
+        double velocity = 2220;
         boolean firing = false;
         double load_elapsed;
         double load_start=0;
@@ -61,31 +61,37 @@ public class BasicTeleopDrive extends LinearOpMode {
                 new TranslationalVelConstraint(10.0),
                 new AngularVelConstraint(Math.PI/3)
         ));
-
+        green.setState(false);
+        red.setState(true);
         waitForStart();
         shooter.fullpower(3000);
 
 
         while (opModeIsActive()) {
             drive.localizer.setPose(new Pose2d(0,0,0));
-            green.setState(true);
-            if(gamepad1.dpad_down){
-                while (sensor.getState()) {
-                    index.power(0.1);
+            if(shooter.getvelocity()>=velocity-10){
+                green.setState(true);
+                red.setState(false);
+
+            }            if(gamepad1.dpadDownWasPressed()){
+                double start_time_wiggle = getRuntime();
+                double end_time_wiggle = getRuntime();
+                while (sensor.getState() && end_time_wiggle-start_time_wiggle < 3) {
+                    index.power(0.15);
                 }
                 index.stop();
                 telemetry.addLine("done step1");
                 telemetry.update();
 
                 while (!sensor.getState()) {
-                    index.power(0.1);
+                    index.power(0.15);
                 }
                 telemetry.addLine("done step2");
                 telemetry.update();
 
                 index.stop();
                 while (sensor.getState()) {
-                    index.power(-0.1);
+                    index.power(-0.15);
                 }telemetry.addLine("done step3");
                 telemetry.update();
                 index.stop();
@@ -94,9 +100,9 @@ public class BasicTeleopDrive extends LinearOpMode {
 
                 index.resetencoder();
 
-                index.rotate(20);
-                while (index.motorbusy()){
-
+                index.rotate(30);
+                while (index.motorbusy() && end_time_wiggle-start_time_wiggle<3){
+                    end_time_wiggle =getRuntime();
                 }
                 index.resetencoder();
             }
@@ -119,6 +125,7 @@ public class BasicTeleopDrive extends LinearOpMode {
             if(gamepad1.rightBumperWasPressed()){
                 if (limelight.getresult().isValid()){
                     shooter.shoot_vel(limelight.getresult().getBotposeAvgDist());
+                    velocity = shooter.shoot_vel(limelight.getresult().getBotposeAvgDist());
                     drive.localizer.update();
                     Pose2d pose = drive.localizer.getPose();
 
@@ -142,7 +149,25 @@ public class BasicTeleopDrive extends LinearOpMode {
 
             }
             i = 0;
+            if(gamepad1.leftBumperWasPressed()){
+                drive.localizer.update();
+                Pose2d pose = drive.localizer.getPose();
+
+                for (int c = 0; c < 2; c++) {
+
+                    Actions.runBlocking(
+                            drive.actionBuilder(pose)
+
+
+                                    .turn(Math.toRadians(-limelight.getresult().getTx()))
+
+                                    .build()
+                    );
+
+                }
+            }
             if(gamepad2.y){
+
                 intake.out();
             }
             if(gamepad2.yWasReleased()){
@@ -164,16 +189,17 @@ public class BasicTeleopDrive extends LinearOpMode {
             }
 
             if(gamepad2.leftBumperWasPressed()){
+
                 velocity-= 20;
-                vel_count-=1;
-                shooter.fullpower(2100+20*vel_count);
+
+                shooter.fullpower((int)(velocity));
 
             }
             if (gamepad2.rightBumperWasPressed()){
                 velocity+= 20;
-                vel_count+=1;
 
-                shooter.fullpower(2100+20*vel_count);
+
+                shooter.fullpower((int)velocity);
             }
 
             if (index.read() == PredominantColorProcessor.Swatch.WHITE){
@@ -202,38 +228,13 @@ public class BasicTeleopDrive extends LinearOpMode {
             }
             if(gamepad2.aWasPressed()){
 
-                while (sensor.getState()) {
-                    index.power(0.3);
-                }
-                index.stop();
-                telemetry.addLine("done step1");
-                telemetry.update();
-
-                while (!sensor.getState()){
-                    index.power(0.3);
-
-                }
-                double current_time = getRuntime();
-                double start_time = getRuntime();
-                while (current_time-start_time <0.3){
-                    current_time = getRuntime();
-                    index.power(0.4);
-                }
-                telemetry.addLine("done step2");
-                telemetry.update();
-
-                index.stop();
-                while (sensor.getState()) {
-                    index.power(-0.3);
-                }telemetry.addLine("done step3");
-                telemetry.update();
-                index.stop();
 
 
 
 
 
-                index.rotate((int)(index.getpos()+50));
+
+                index.rotate((int)(index.getpos()+350));
                 while (index.motorbusy()){
 
                 }

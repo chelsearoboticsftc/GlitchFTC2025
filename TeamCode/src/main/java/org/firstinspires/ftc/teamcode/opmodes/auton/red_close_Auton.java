@@ -36,6 +36,7 @@ public class red_close_Auton extends LinearOpMode {
         int t = 0;
 
 
+
         // Wait for the driver to press start
         waitForStart();
 
@@ -106,7 +107,7 @@ public class red_close_Auton extends LinearOpMode {
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
-                        .lineToX(-35)
+                        .lineToX(-38)
 
 
 
@@ -119,7 +120,7 @@ public class red_close_Auton extends LinearOpMode {
         index.rotate(final_pos_needed);
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0,0,0))
-                        .lineToX(35)
+                        .lineToX(38)
                         .turn(Math.toRadians(-135))
                         .build()
 
@@ -149,14 +150,7 @@ public class red_close_Auton extends LinearOpMode {
 
 
 
-            shooter.load();
-            Thread.sleep(500);
-            shooter.unload();
 
-            index.feed();
-            Thread.sleep(500);
-            index.stop();
-            Thread.sleep(700);
 
 
         for (int i = 0; i < 3; i++) {
@@ -165,9 +159,10 @@ public class red_close_Auton extends LinearOpMode {
             index.feed();
             Thread.sleep(500);
             index.stop();
-            Thread.sleep(700);
+
             shooter.load();
             Thread.sleep(500);
+
             shooter.unload();
 
 
@@ -180,41 +175,17 @@ public class red_close_Auton extends LinearOpMode {
             while (index.motorbusy()){
 
             }
-        }
 
+        }
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0, 0, 0))
+
+
+                        .strafeTo(new Vector2d(0,-50))
+
+
+                        .build()
+        );
+        drive.localizer.setPose(new Pose2d(0,0,0));
 
     }}
-//        intake.stop();
-//        index.power(0);
-//        double pos_needed = (355-(index.getpos() % 355));
-//        int final_pos_needed = (int) (index.getpos()+pos_needed);
-//        //index get pos
-//        index.rotate(final_pos_needed);
-//
-//        while (t<8){
-//            Actions.runBlocking(
-//                    drive.actionBuilder(new Pose2d(0, 0, 0))
-//
-//
-//
-//                            .turn((limelight.getresult().getTx()*-0.1)* Math.PI/180)
-//
-//                            .build()
-//            );
-//            t+=1;
-//        }
-//        t =0;
-//        shooter.load();
-//        Thread.sleep(500);
-//        shooter.unload();
-//
-//        index.feed();
-//        Thread.sleep(1000);
-//        index.stop();
-//        Thread.sleep(2000);
-//
-//
-//
-//
-//    }
-//}
