@@ -91,6 +91,7 @@ public class Index {
 
 
 
+
     }
     public int rotate(int pos){
         index.setTargetPosition(pos);
@@ -100,7 +101,7 @@ public class Index {
 
 
 
-        index.setPower(-0.1);
+        index.setPower(-0.2);
 
 
         return index.getCurrentPosition();
@@ -129,6 +130,7 @@ public class Index {
         index.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         index.setPower(power);
     }
+    
 
 
 }

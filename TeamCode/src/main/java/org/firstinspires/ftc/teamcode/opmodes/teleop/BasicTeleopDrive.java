@@ -10,6 +10,8 @@ import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -34,6 +36,7 @@ public class BasicTeleopDrive extends LinearOpMode {
         DigitalChannel sensor = hardwareMap.get(DigitalChannel.class, "sensor");
         DigitalChannel green = hardwareMap.get(DigitalChannel.class, "green");
         DigitalChannel red = hardwareMap.get(DigitalChannel.class, "red");
+
         sensor.setMode(DigitalChannel.Mode.INPUT);
         red.setMode(DigitalChannel.Mode.OUTPUT);
         green.setMode(DigitalChannel.Mode.OUTPUT);
@@ -108,12 +111,7 @@ public class BasicTeleopDrive extends LinearOpMode {
             }
             //shooter.fullpower(velocity);
             telemetry.update();
-            if(gamepad1.leftBumperWasPressed()){
-                speed = 1.0;
-            }
-            else {
-                speed = 0.75;
-            }
+
             if (gamepad2.x) {
 
                 intake.in();
@@ -169,9 +167,11 @@ public class BasicTeleopDrive extends LinearOpMode {
             if(gamepad2.y){
 
                 intake.out();
+                index.power(-0.5);
             }
             if(gamepad2.yWasReleased()){
                 intake.stop();
+                index.power(0);
             }
             if (gamepad2.b) {
 
@@ -187,6 +187,7 @@ public class BasicTeleopDrive extends LinearOpMode {
                 index.rotate(final_pos_needed);
 
             }
+
 
             if(gamepad2.leftBumperWasPressed()){
 
@@ -227,26 +228,59 @@ public class BasicTeleopDrive extends LinearOpMode {
                 shooter.unload();
             }
             if(gamepad2.aWasPressed()){
-
-
-
-
-
-
-
+                double start_time_a = getRuntime();
+                double end_time_a= getRuntime();
                 index.rotate((int)(index.getpos()+350));
-                while (index.motorbusy()){
-
+                while (index.motorbusy() && end_time_a-start_time_a < 2){
+                    end_time_a= getRuntime();
                 }
+                while (sensor.getState()) {
+                    index.power(0.15);
+                }
+                index.stop();
+                telemetry.addLine("done step1");
+                telemetry.update();
+
+                while (!sensor.getState()) {
+                    index.power(0.15);
+                }
+                telemetry.addLine("done step2");
+                telemetry.update();
+
+                index.stop();
+                double time = getRuntime();
+                double time_now = getRuntime();
+                while (sensor.getState() && time_now-time < 0.5) {
+                    time_now =getRuntime();
+                    index.power(-0.2);
+                }telemetry.addLine("done step3");
+                telemetry.update();
+                index.stop();
+
+
+
+                index.resetencoder();
+                start_time_a = getRuntime();
+                index.rotate(20);
+
+
+
+
+
+
+
 
 
 
             }
+            if(gamepad1.left_trigger>0.5){
+                speed = 0.5;
+            }
+            else {speed=1.0;}
 
-
-            double left_y = -gamepad1.left_stick_y *0.75;
-            double right_x= -gamepad1.right_stick_x*0.75;
-            double left_x = -gamepad1.left_stick_x*0.75;
+            double left_y = -gamepad1.left_stick_y *speed;
+            double right_x= -gamepad1.right_stick_x*speed;
+            double left_x = -gamepad1.left_stick_x*speed;
             drive.setDrivePowers(
                 new PoseVelocity2d(
                         new Vector2d(left_y,
@@ -259,6 +293,7 @@ public class BasicTeleopDrive extends LinearOpMode {
             telemetry.addData("tx", limelight.getresult().getTx());
             telemetry.addData("distance", limelight.getresult().getBotposeAvgDist());
             telemetry.addData("velocity_command", velocity);
+
             }
         }
         }

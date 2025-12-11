@@ -33,7 +33,7 @@ public class blue_close_Auton extends LinearOpMode {
         waitForStart();
 
 
-        shooter.fullpower(2200);
+        shooter.fullpower(1900);
 
 
         if (isStopRequested()) return;
@@ -89,7 +89,7 @@ public class blue_close_Auton extends LinearOpMode {
                 drive.actionBuilder(new Pose2d(0, 0,0 ))
 
                         .lineToX(-4)
-                        .turn(Math.toRadians(-130))
+                        .turn(Math.toRadians(-110))
 
 
                         .build()
@@ -114,7 +114,7 @@ public class blue_close_Auton extends LinearOpMode {
                 drive.actionBuilder(new Pose2d(0,0,0))
 
                         .lineToX(38)
-                        .turn(Math.toRadians(130))
+                        .turn(Math.toRadians(110))
                         .build()
 
         );
@@ -126,7 +126,7 @@ public class blue_close_Auton extends LinearOpMode {
         telemetry.addData("tx", limelight.getresult().getTx());
         telemetry.update();
 
-
+        shooter.fullpower(1850);
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
@@ -174,7 +174,7 @@ public class blue_close_Auton extends LinearOpMode {
                 drive.actionBuilder(new Pose2d(0, 0, 0))
 
 
-                        .strafeTo(new Vector2d(0,20))
+                        .strafeTo(new Vector2d(0,30))
 
 
                         .build()
