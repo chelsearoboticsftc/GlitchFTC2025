@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
+import com.acmerobotics.roadrunner.InstantAction;
+import com.acmerobotics.roadrunner.InstantFunction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -42,7 +44,6 @@ public class blue_close_Auton extends LinearOpMode {
         // We create an "action" to drive forward (along the X-axis) by 120 inches.
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
-
 
                         .lineToX(-45)
 

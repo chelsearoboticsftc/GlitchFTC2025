@@ -15,10 +15,14 @@ public class MeepMeep_red_far {
                 .setConstraints(70, 70, Math.toRadians(180), Math.toRadians(180), 16)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(60, 20, 0))
+
+
+
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(62, 14, 0))
                 .lineToX(53)
-                .turn(-18* Math.PI/180)
+                .turn(Math.toRadians(-18))
                 .waitSeconds(6)
+
                 .strafeToLinearHeading(new Vector2d(36,30),Math.toRadians(90))
 
                 .strafeToLinearHeading(new Vector2d(36,50),Math.toRadians(90))
@@ -33,8 +37,9 @@ public class MeepMeep_red_far {
                 .strafeToLinearHeading(new Vector2d(50,20),Math.toRadians(-45))
                 .build());
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_LIGHT)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
                 .setDarkMode(true)
+
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
