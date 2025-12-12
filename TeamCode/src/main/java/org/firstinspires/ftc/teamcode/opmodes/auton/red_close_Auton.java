@@ -41,7 +41,7 @@ public class red_close_Auton extends LinearOpMode {
         waitForStart();
 
 
-        shooter.fullpower(2200);
+        shooter.fullpower(2150);
 
 
         if (isStopRequested()) return;

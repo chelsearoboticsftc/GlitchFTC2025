@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.subsystems.Vision;
 import java.util.Arrays;
 
 @Autonomous
-public class MeepMeep_red_far extends LinearOpMode {
+public class MeepMeep_blue_far extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Initialize MecanumDrive. The starting pose is (0, 0) with a 0-degree heading.
@@ -44,7 +44,7 @@ public class MeepMeep_red_far extends LinearOpMode {
         if (isStopRequested()) return;
         Actions.runBlocking(drive.actionBuilder(new Pose2d(0, 0,0))
                 .strafeToLinearHeading(new Vector2d(10,0),0)
-                .turn(Math.toRadians(-26))
+                .turn(Math.toRadians(20))
                 .stopAndAdd(new InstantFunction() {
                     @Override
                     public void run() {
@@ -60,20 +60,58 @@ public class MeepMeep_red_far extends LinearOpMode {
                         }
                         intake.in();
                         index.power(0.5);
-                        shooter.fullpower(2300);
                     }
                 })
 
+                .strafeToLinearHeading(new Vector2d(32, 16), Math.toRadians(270))
 
-                .strafeToLinearHeading(new Vector2d(33, -16), Math.toRadians(-270))
+                .strafeToLinearHeading(new Vector2d(32, 36), Math.toRadians(270))
 
-                .strafeToLinearHeading(new Vector2d(33, -36), Math.toRadians(-270))
-
-                .strafeToLinearHeading(new Vector2d(10, 0), Math.toRadians(-18))
+                .strafeToLinearHeading(new Vector2d(10, 0), Math.toRadians(18))
 
                 .stopAndAdd(new InstantFunction() {
                     @Override
                     public void run() {
+                        index.power(0);
+                        intake.stop();
+                        if (limelight.getresult().isValid()){
+
+                            drive.localizer.update();
+                            Pose2d pose = drive.localizer.getPose();
+
+                            for (int c = 0; c < 2; c++) {
+
+                                Actions.runBlocking(
+                                        drive.actionBuilder(pose)
+
+
+                                                .turn(Math.toRadians(-limelight.getresult().getTx()))
+
+                                                .build()
+                                );
+
+                            }}
+                        for (int i = 0; i < 3; i++) {
+                            index.feed();
+                            sleep(500);
+                            index.stop();
+                            shooter.load();
+                            sleep(500);
+                            shooter.unload();
+                            index.rotate((int)(index.getpos()+350));
+                            while (index.motorbusy()){}
+                        }
+                    }
+                })
+
+                .strafeToLinearHeading(new Vector2d(55, 30), Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(55, 50), Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(10, 14), Math.toRadians(18))
+                .stopAndAdd(new InstantFunction() {
+                    @Override
+                    public void run() {
+
+
                         index.power(0);
                         intake.stop();
                         if (limelight.getresult().isValid()) {
@@ -134,96 +172,15 @@ public class MeepMeep_red_far extends LinearOpMode {
                         }
                         index.power(0.5);
                         intake.in();
-                    }})
-
-        
-                .strafeToLinearHeading(new Vector2d(55, -25), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(55, -50), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(20, 0), Math.toRadians(-18))
-                .stopAndAdd(new InstantFunction() {
-                    @Override
-                    public void run() {
-                        index.power(0);
-                        intake.stop();
 
 
-
-                        while (sensor.getState()) {
-                            index.power(0.15);
-                        }
-                        index.stop();
-                        telemetry.addLine("done step1");
-                        telemetry.update();
-
-                        while (!sensor.getState()) {
-                            index.power(0.15);
-                        }
-                        telemetry.addLine("done step2");
-                        telemetry.update();
-
-                        index.stop();
-
-                        while (sensor.getState()) {
-
-                            index.power(-0.2);
-                        }
-                        telemetry.addLine("done step3");
-                        telemetry.update();
-                        index.stop();
-
-
-                        index.resetencoder();
-                        for (int i = 0; i < 3; i++) {
-                            index.feed();
-                            sleep(500);
-                            index.stop();
-                            shooter.load();
-                            sleep(500);
-                            shooter.unload();
-                            index.rotate((int) (index.getpos() + 350));
-                            while (index.motorbusy()) {
-                            }
-                            double start_time_a = getRuntime();
-                            double end_time_a = getRuntime();
-
-                            while (index.motorbusy() && end_time_a - start_time_a < 2) {
-                                end_time_a = getRuntime();
-                            }
-                            while (sensor.getState()) {
-                                index.power(0.15);
-                            }
-                            index.stop();
-                            telemetry.addLine("done step1");
-                            telemetry.update();
-
-                            while (!sensor.getState()) {
-                                index.power(0.15);
-                            }
-                            telemetry.addLine("done step2");
-                            telemetry.update();
-
-                            index.stop();
-                            double time = getRuntime();
-                            double time_now = getRuntime();
-                            while (sensor.getState() && time_now - time < 0.5) {
-                                time_now = getRuntime();
-                                index.power(-0.2);
-                            }
-                            telemetry.addLine("done step3");
-                            telemetry.update();
-                            index.stop();
-
-
-                            index.resetencoder();
-                            //index.rotate(-10);
-                            start_time_a = getRuntime();
 
 
 
 
 
                         }
-                    }
+
                 })
                 .strafeToLinearHeading(new Vector2d(50, 20), Math.toRadians(-45))
                 .build());
